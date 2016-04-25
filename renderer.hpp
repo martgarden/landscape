@@ -11,6 +11,7 @@ namespace marrow {
             SkyboxShader _skybox_shader;
             glm::mat4 _projectionMatrix;
             std::list<Object *> _objectList;
+            std::list<Light *> _lightList;
             Skybox _skybox;
 
         public:
@@ -23,6 +24,10 @@ namespace marrow {
 
             addObject(Object * newObject) {
                 _objectList.push_back(newObject);
+            }
+
+            addLight(Light * newLight) {
+                _lightList.push_back(newLight);
             }
 
             render(Camera & camera) {

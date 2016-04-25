@@ -2,7 +2,7 @@
 
 namespace marrow {
 
-    string Shader::LoadFileToString(const char *file_name)
+    string Shader::loadFileToString(const char *file_name)
     {
         ifstream file(file_name);
         stringstream ss;
@@ -96,5 +96,13 @@ namespace marrow {
         if(_program_id == 0)
             return -1;
         return glGetUniformLocation(_program_id, uniform_name);
+    }
+
+    void ObjectShader::set() {
+        glUseProgram(_program_id);
+    }
+
+    void ObjectShader::unset() {
+        glUseProgram(0);
     }
 }
