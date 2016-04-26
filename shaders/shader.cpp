@@ -86,10 +86,10 @@ namespace marrow {
         else _program_id = program;
     }
 
-    int Shader::getInLocation(const char * in_name) {
+    int Shader::setInLocation(int index, const char * in_name) {
         if(_program_id == 0)
             return -1;
-        return glGetAttribLocation(_program_id, in_name);
+        return glBindAttribLocation(_program_id, index, in_name);
     }
 
     int Shader::getUniformLocation(const char * uniform_name) {

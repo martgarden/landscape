@@ -4,7 +4,6 @@
 namespace marrow {
     class Shader {
         protected:
-            int _position_loc = -1;
             GLuint _program_id = 0;
 
             string loadFileToString(const char * file_name);
@@ -14,6 +13,8 @@ namespace marrow {
             int getUniformLocation(const char * uniform_name);
 
         public:
+            static const int _position_loc = 0;
+
             void set();
             static void unset();
 
