@@ -1,8 +1,6 @@
 #include "light.hpp"
 
 namespace marrow {
-    Light NO_LIGHT(glm::vec4(0.0f), glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f));
-
     Light::Light(glm::vec4 & position, glm::vec3 & diffuse, glm::vec3 & ambient, glm::vec3 & specular) {
         glGenBuffers(1, &_ubo_id);
         glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
