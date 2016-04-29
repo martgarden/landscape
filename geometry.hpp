@@ -2,24 +2,26 @@
 #define MARROW_GEOMETRY_H
 
 namespace marrow {
-	class PV112Geometry {
+    class Geometry {
         private:
-		GLuint VertexBuffers[3];
-		GLuint IndexBuffer;
-		GLuint VAO;
-		GLenum Mode;
-		GLsizei DrawArraysCount;
-		GLsizei DrawElementsCount;
+        GLuint VertexBuffers[3];
+        GLuint IndexBuffer;
+        GLuint VAO;
+        GLenum Mode;
+        GLsizei DrawArraysCount;
+        GLsizei DrawElementsCount;
 
-                bool parseOBJ(const char *file_name, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec3> &out_normals, std::vector<glm::vec2> &out_tex_coords, std::vector<GLushort> &out_indices);
+        bool parseOBJ(const char *file_name, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec3> &out_normals, std::vector<glm::vec2> &out_tex_coords, std::vector<GLushort> &out_indices);
 
-	public:
-		PV112Geometry();
-		PV112Geometry(const PV112Geometry &rhs);
-		PV112Geometry &operator =(const PV112Geometry &rhs);
+    public:
+        Geometry();
+        Geometry(const Geometry &rhs);
+        Geometry &operator =(const Geometry &rhs);
+        Geometry(const char * file_name);
 
-                GLuint g
-	};
+        static Geometry loadOBJ(const char * file_name);
+
+    };
 }
 
 #endif

@@ -183,4 +183,91 @@ namespace marrow {
 
         return true;
     }
+
+    Geometry::Geometry() {
+        VertexBuffers[0] = 0;
+        VertexBuffers[1] = 0;
+        VertexBuffers[2] = 0;
+        IndexBuffer = 0;
+        VAO = 0;
+        Mode = GL_POINTS;
+        DrawArraysCount = 0;
+        DrawElementsCount = 0;
+    }
+
+    Geometry::Geometry(const Geometry &rhs) {
+        *this = rhs;
+    }
+
+    Geometry &Geometry::operator =(const Geometry &rhs) {
+        VertexBuffers[0] = rhs.VertexBuffers[0];
+        VertexBuffers[1] = rhs.VertexBuffers[1];
+        VertexBuffers[2] = rhs.VertexBuffers[2];
+        IndexBuffer = rhs.IndexBuffer;
+        VAO = rhs.VAO;
+        Mode = rhs.Mode;
+        DrawArraysCount = rhs.DrawArraysCount;
+        DrawElementsCount = rhs.DrawElementsCount;
+        return *this;
+    }
+
+    Geometry(const char * file_name) {
+        *this = loadOBJ(file_name);
+    }
+
+    Geometry loadOBJ(const char * file_name) {
+        Geometry geometry;
+
+        std::vector<glm::vec3> vertices;
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> tex_coords;
+        std::vector<GLushort> indices;
+        if (!ParseOBJFile(file_name, vertices, normals, tex_coords, indices))
+        {
+            return geometry;        // Return empty geometry, the error message was already printed
+        }
+
+        // Create buffers for vertex data
+        glGenBuffers(3, geometry.VertexBuffers);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[0]);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float) * 3, vertices.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[1]);
+        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float) * 3, normals.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[2]);
+        glBufferData(GL_ARRAY_BUFFER, tex_coords.size() * sizeof(float) * 2, tex_coords.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glGenBuffers(1, &(geometry.IndexBuffer))
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.IndexBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLushort), indices.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        // Create a vertex array object for the geometry
+        glGenVertexArrays(1, &geometry.VAO);
+
+        // Set the parameters of the geometry
+        glBindVertexArray(geometry.VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[0]);
+        glEnableVertexAttribArray(ObjectShader::_position_loc);
+        glVertexAttribPointer(ObjectShader::_position_loc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[1]);
+        glEnableVertexAttribArray(ObjectShader::_normal_loc);
+        glVertexAttribPointer(ObjectShader::_normal_loc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.VertexBuffers[2]);
+        glEnableVertexAttribArray(ObjectShader::_tex_coord_loc);
+        glVertexAttribPointer(ObjectShader::_tex_coord_loc, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.IndexBuffer);
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+        geometry.Mode = GL_TRIANGLES;
+        geometry.DrawArraysCount = 0;
+        geometry.DrawElementsCount = indices.size();
+
+        return geometry;
+    }
+
 }
