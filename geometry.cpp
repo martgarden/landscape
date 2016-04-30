@@ -262,7 +262,7 @@ namespace marrow {
 
         geometry._draw_mode = GL_TRIANGLES;
         geometry._draw_arrays_count = 0;
-        geometry._draw_elemetnts_count = indices.size()/3;
+        geometry._draw_elemetnts_count = indices.size();
 
         return geometry;
     }
