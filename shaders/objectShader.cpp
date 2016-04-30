@@ -1,4 +1,6 @@
-#include "ObjectShader.hpp"
+#include "objectShader.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
 
 namespace marrow {
     ObjectShader::ObjectShader() {
@@ -26,12 +28,12 @@ namespace marrow {
     }
 
     void ObjectShader::setFog(glm::vec3 & fog_color, float fog_density) {
-        glUniform3fv(_fog_color_loc, 1, GL_FALSE, glm::value_ptr(fog_color));
-        glUniform1f(_fog_density_loc, 1, GL_FALSE, fog_density);
+        glUniform3fv(_fog_color_loc, 1, glm::value_ptr(fog_color));
+        glUniform1f(_fog_density_loc, fog_density);
     }
 
     void ObjectShader::setEyePos(glm::vec4 & eye_pos) {
-        glUniform4fv(_eye_pos_loc, 1, GL_FALSE, glm::value_ptr(eye_pos));
+        glUniform4fv(_eye_pos_loc, 1, glm::value_ptr(eye_pos));
     }
 
     void ObjectShader::setLights(std::list<Light *> & lights) {
@@ -40,7 +42,7 @@ namespace marrow {
             if(it == lights.end())
                 glBindBufferBase(GL_UNIFORM_BUFFER, _light_data_bloc + i, NO_LIGHT.getUBO());
             else {
-                glBindBufferBase(GL_UNIFORM_BUFFER, _light_data_bloc + i, it->getUBO());
+                glBindBufferBase(GL_UNIFORM_BUFFER, _light_data_bloc + i, (*it)->getUBO());
                 it++;
             }
         }

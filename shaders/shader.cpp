@@ -1,8 +1,16 @@
 #include "shader.hpp"
 
+#include <string>
+#include <memory>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
 namespace marrow {
 
-    string Shader::loadFileToString(const char *file_name)
+    string LoadFileToString(const char *file_name)
     {
         ifstream file(file_name);
         stringstream ss;
@@ -54,14 +62,14 @@ namespace marrow {
     }
 
     void Shader::createAndLinkProgram(const char * vertex_shader_file, const char * fragment_shader_file) {
-        GLuint vs_shader = LoadAndCompileShader(GL_VERTEX_SHADER, vertex_shader);
+        GLuint vs_shader = loadAndCompileShader(GL_VERTEX_SHADER, vertex_shader_file);
         if (0 == vs_shader) {
-            return 0;
+            return;
         }
-        GLuint fs_shader = LoadAndCompileShader(GL_FRAGMENT_SHADER, fragment_shader);
+        GLuint fs_shader = loadAndCompileShader(GL_FRAGMENT_SHADER, fragment_shader_file);
         if (0 == fs_shader) {
             glDeleteShader(vs_shader);
-            return 0;
+            return;
         }
 
         GLuint program = glCreateProgram();
@@ -72,7 +80,7 @@ namespace marrow {
         int link_status;
         glGetProgramiv(program, GL_LINK_STATUS, &link_status);
         if (GL_FALSE == link_status) {
-            cout << "Failed to link program with vertex shader " << vertex_shader << " and fragment shader " << fragment_shader << endl;
+            cout << "Failed to link program with vertex shader " << vertex_shader_file << " and fragment shader " << fragment_shader_file << endl;
             int log_len = 0;
             glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
             unique_ptr<char []> log(new char[log_len]);
@@ -81,15 +89,15 @@ namespace marrow {
             glDeleteShader(vs_shader);
             glDeleteShader(fs_shader);
             glDeleteProgram(program);
-            return 0;
+            return;
         }
         else _program_id = program;
     }
 
-    int Shader::setInLocation(int index, const char * in_name) {
+    void Shader::setInLocation(int index, const char * in_name) {
         if(_program_id == 0)
-            return -1;
-        return glBindAttribLocation(_program_id, index, in_name);
+            return;
+        glBindAttribLocation(_program_id, index, in_name);
     }
 
     int Shader::getUniformLocation(const char * uniform_name) {
@@ -98,11 +106,17 @@ namespace marrow {
         return glGetUniformLocation(_program_id, uniform_name);
     }
 
-    void ObjectShader::set() {
+    int Shader::getUniformBlockIndex(const char * uniform_block_name) {
+        if(_program_id == 0)
+            return -1;
+        return glGetUniformBlockIndex(_program_id, uniform_block_name);
+    }
+
+    void Shader::set() {
         glUseProgram(_program_id);
     }
 
-    void ObjectShader::unset() {
+    void Shader::unset() {
         glUseProgram(0);
     }
 }

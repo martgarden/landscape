@@ -1,9 +1,10 @@
 #include "window.hpp"
 #include "initialiser.hpp"
+#include "light.hpp"
 
 #include <GL/freeglut.h>
 
-Light NO_LIGHT;
+marrow::Light NO_LIGHT;
 
 int main(int argc, char ** argv) {
     marrow::Initialiser::init(argc, argv);
