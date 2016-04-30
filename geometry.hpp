@@ -26,6 +26,8 @@ namespace marrow {
 
             static Geometry loadOBJ(const char * file_name);
 
+            void draw();
+
     };
 }
 

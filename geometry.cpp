@@ -262,9 +262,18 @@ namespace marrow {
 
         geometry._draw_mode = GL_TRIANGLES;
         geometry._draw_arrays_count = 0;
-        geometry._draw_elemetnts_count = indices.size();
+        geometry._draw_elemetnts_count = indices.size()/3;
 
         return geometry;
+    }
+
+    void Geometry::draw() {
+        glBindVertexArray(_vao_id);
+        if (_draw_arrays_count > 0)
+            glDrawArrays(_draw_mode, 0, _draw_arrays_count);
+        if (_draw_elemetnts_count > 0)
+            glDrawElements(_draw_mode, _draw_elemetnts_count, GL_UNSIGNED_SHORT, nullptr);
+        glBindVertexArray(0);
     }
 
 }
