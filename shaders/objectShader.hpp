@@ -12,7 +12,6 @@ namespace marrow {
     class ObjectShader : public Shader {
         private:
             //uniform
-            int _model_matrix_loc = -1;
             int _normal_matrix_loc = -1;
             int _pvm_matrix_loc = -1;
             int _fog_color_loc = -1;
@@ -27,10 +26,10 @@ namespace marrow {
 
             ObjectShader();
 
-            void setModelMatrix(glm::mat4 & model_matrix);
-            void setPVMMatrix(glm::mat4 & pvm_matrix);
-            void setFog(glm::vec3 & fog_color, float fog_density);
-            void setEyePos(glm::vec4 & eye_pos);
+            void setNormalMatrix(glm::mat4 normal_matrix);
+            void setPVMMatrix(glm::mat4 pvm_matrix);
+            void setFog(const glm::vec3 & fog_color, const float fog_density);
+            void setEyePos(const glm::vec3 & eye_pos);
             void setLights(std::list<Light *> & lights);
 
     };

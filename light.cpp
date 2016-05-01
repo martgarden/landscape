@@ -3,7 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace marrow {
-    Light::Light(glm::vec4 & position, glm::vec3 & diffuse, glm::vec3 & ambient, glm::vec3 & specular) {
+    Light::Light(glm::vec4 position, glm::vec3 diffuse, glm::vec3 ambient, glm::vec3 specular) {
         glGenBuffers(1, &_ubo_id);
         glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
         memcpy(_ubo_data._position, glm::value_ptr(position), sizeof(GLfloat)*4);

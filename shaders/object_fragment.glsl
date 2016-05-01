@@ -7,7 +7,7 @@ in vec3 VS_position_ws;
 
 uniform vec3 fog_color;
 uniform float fog_density;
-uniform vec4 eye_pos;
+uniform vec3 eye_pos;
 
 uniform light_data {
     vec4 position;

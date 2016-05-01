@@ -4,12 +4,12 @@
 
 #include <GL/freeglut.h>
 
-marrow::Light NO_LIGHT;
+marrow::Light * marrow::NO_LIGHT;
 
 int main(int argc, char ** argv) {
     marrow::Initialiser::init(argc, argv);
     marrow::Window window(500, 500, "Legolas");
-    NO_LIGHT(glm::vec4(0.0f), glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f));
+    marrow::NO_LIGHT = new marrow::Light(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     glutMainLoop();
     return 0;
 }

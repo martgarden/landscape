@@ -16,13 +16,13 @@ namespace marrow {
             } _ubo_data;
 
         public:
-            Light(glm::vec4 & position, glm::vec3 & diffuse, glm::vec3 & ambient, glm::vec3 & specular);
+            Light(glm::vec4 position, glm::vec3 diffuse, glm::vec3 ambient, glm::vec3 specular);
 
             GLuint getUBO();
 
     };
 
-    extern Light NO_LIGHT;
+    extern Light * NO_LIGHT;
 }
 
 #endif
