@@ -4,12 +4,13 @@
 
 namespace marrow {
     ObjectShader::ObjectShader() {
-        createAndLinkProgram("object_vertex.glsl", "object_fragment.glsl");
+        createAndLinkProgram("shaders/object_vertex.glsl", "shaders/object_fragment.glsl");
         //in
         setInLocation(_position_loc, "position");
         setInLocation(_normal_loc, "normal");
         setInLocation(_tex_coord_loc, "tex_coord");
         //uniform
+        _model_matrix_loc = getUniformLocation("model_matrix");
         _normal_matrix_loc = getUniformLocation("normal_matrix");
         _pvm_matrix_loc = getUniformLocation("pvm_matrix");
         _fog_color_loc = getUniformLocation("fog_color");
@@ -18,8 +19,12 @@ namespace marrow {
         _light_data_bloc = getUniformBlockIndex("light_data");
     }
 
-    void ObjectShader::setNormalMatrix(glm::mat4 normal_matrix) {
-        glUniformMatrix4fv(_normal_matrix_loc, 1, GL_FALSE, glm::value_ptr(normal_matrix));
+    void ObjectShader::setModelMatrix(glm::mat4 model_matrix) {
+        glUniformMatrix4fv(_model_matrix_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
+    }
+
+    void ObjectShader::setNormalMatrix(glm::mat3 normal_matrix) {
+        glUniformMatrix3fv(_normal_matrix_loc, 1, GL_FALSE, glm::value_ptr(normal_matrix));
     }
 
     void ObjectShader::setPVMMatrix(glm::mat4 pvm_matrix) {

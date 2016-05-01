@@ -13,7 +13,7 @@ out vec3 VS_position_ws;
 
 void main()
 {
-    VS_normal_ws = normalize(normal_matrix * normal);
+    VS_normal_ws = normalize(normal * normal);
     VS_position_ws = (model_matrix * position).xyz;
-    gl_Position = PVM_matrix * position;
+    gl_Position = pvm_matrix * position;
 }

@@ -7,7 +7,10 @@ namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList() {
         //_terrain_shader = TerrainShader();
         _object_shader = ObjectShader();
-        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(glutGet(GLUT_WINDOW_WIDTH)) / float(glutGet(GLUT_WINDOW_HEIGHT)), 0.1f, 100.0f);
+        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(glutGet(GLUT_WINDOW_WIDTH)) / float(glutGet(GLUT_WINDOW_HEIGHT)), 0.1f, 1000.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearDepth(1.0);
+        glEnable(GL_DEPTH_TEST);
     }
 
     void Renderer::addObject(Object * newObject) {
@@ -19,6 +22,7 @@ namespace marrow {
     }
 
     void Renderer::render(Camera & camera) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
         _object_shader.setFog(_fogColor, _fogDensity);
         _object_shader.setLights(_lightList);

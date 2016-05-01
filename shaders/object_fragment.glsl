@@ -9,10 +9,10 @@ uniform vec3 fog_color;
 uniform float fog_density;
 uniform vec3 eye_pos;
 
-uniform light_data {
+layout (std140) uniform light_data {
     vec4 position;
-    vec3 diffuse;
     vec3 ambient;
+    vec3 diffuse;
     vec3 specular;
 } lights[4];
 
@@ -27,39 +27,26 @@ uniform vec3 eye_position;
 
 void main()
 {
-    /*vec3 L;
-    if(light_position.w == 0)
-        L = normalize(light_position.xyz);
-    else
-        L = normalize(light_position.xyz - VS_position_ws);
-
-    vec3 E = normalize(eye_position - VS_position_ws);
-    vec3 N = normalize(VS_normal_ws);
-    vec3 H = normalize(E + L);
-
-    float Idiff = max(dot(L, N), 0.0);
-    float Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
-
-    vec3 light = material_ambient * light_ambient +
-        material_diffuse * light_diffuse * Idiff +
-        material_specular * light_specular * Ispec;
-
-    if(light2_position.w == 0)
-        L = normalize(light2_position.xyz);
-    else
-        L = normalize(light2_position.xyz - VS_position_ws);
-
+    vec3 material_ambient = vec3(1.0, 1.0, 1.0);
+    vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
+    vec3 material_specular = vec3(1.0, 1.0, 1.0);
+    float material_shininess = 0.05;
+    vec3 L, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
-    H = normalize(E + L);
+    float Idiff, Ispec;
+    vec3 light = vec3(0.0);
+    //for(int i = 0; i < 4; i++) {
+        L = normalize(lights[0].position.xyz - lights[0].position.w*VS_position_ws);
+        H = normalize(E + L);
 
-    float Idiff2 = max(dot(L, N), 0.0);
-    float Ispec2 = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
+        Idiff = max(abs(dot(L, N)), 0.0);
+        Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
 
-    vec3 light2 = material_ambient * light2_ambient +
-        material_diffuse * light2_diffuse * Idiff2 +
-        material_specular * light2_specular * Ispec2;
+        light += material_ambient * lights[0].ambient +
+        material_diffuse * lights[0].diffuse * Idiff +
+        material_specular * lights[0].specular * Ispec;
+    //}
 
-    final_color = vec4(light + light2, 1.0);*/
-    final_color = vec4(1.0);
+    final_color = vec4(light, 1.0);
 }

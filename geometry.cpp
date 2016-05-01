@@ -259,7 +259,6 @@ namespace marrow {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
         geometry._draw_mode = GL_TRIANGLES;
         geometry._draw_arrays_count = 0;
         geometry._draw_elemetnts_count = indices.size();
