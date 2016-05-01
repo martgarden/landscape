@@ -40,7 +40,7 @@ void main()
         L = normalize(lights[0].position.xyz - lights[0].position.w*VS_position_ws);
         H = normalize(E + L);
 
-        Idiff = max(abs(dot(L, N)), 0.0);
+        Idiff = max(dot(L, N), 0.0);
         Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
 
         light += material_ambient * lights[0].ambient +
