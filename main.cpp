@@ -16,9 +16,11 @@ int main(int argc, char ** argv) {
     marrow::Geometry cabinet("obj/cabinet.obj");
     marrow::Object cabob(&cabinet, glm::rotate(glm::mat4(1.0), -0.1f, glm::vec3(1.0, 0.0, 0.0)));
     marrow::Light light(glm::vec4(1.0f, 4.0f, 1.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.4f, 0.4f, 0.4f));
+    marrow::Light light2(glm::vec4(1.0f, 4.0f, 5.0f, 1.0f), glm::vec3(0.1f, 0.5f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.4f, 0.4f, 0.4f));
     marrow::Renderer renderer;
     renderer.addObject(&cabob);
     renderer.addLight(&light);
+    renderer.addLight(&light2);
     renderer.render(camera);
     glutSwapBuffers();
     glutMainLoop();

@@ -3,15 +3,35 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace marrow {
+    GLuint Light::_ubo_id = GL_INVALID_INDEX;
+    int Light::_last_used = -1;
+    Light::_ubo_structure Light::_ubo_data[MAX_LIGHTS] = {0};
+
     Light::Light(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {
-        glGenBuffers(1, &_ubo_id);
+        if(_ubo_id == GL_INVALID_INDEX) {
+            glGenBuffers(1, &_ubo_id);
+            glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
+            glBufferData(GL_UNIFORM_BUFFER, MAX_LIGHTS*sizeof(_ubo_structure), NULL, GL_STATIC_DRAW);
+        }
+        if(_last_used == MAX_LIGHTS)
+            return;
+        _array_position = _last_used + 1;
+        _last_used++;
+        setParams(position, ambient, diffuse, specular);
+    }
+
+    void Light::setParams(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {
         glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
-        memcpy(_ubo_data._position, glm::value_ptr(position), sizeof(GLfloat)*4);
-        memcpy(_ubo_data._diffuse, glm::value_ptr(diffuse), sizeof(GLfloat)*3);
-        memcpy(_ubo_data._ambient, glm::value_ptr(ambient), sizeof(GLfloat)*3);
-        memcpy(_ubo_data._specular, glm::value_ptr(specular), sizeof(GLfloat)*3);
-        glBufferData(GL_UNIFORM_BUFFER, 16*sizeof(GLfloat), &_ubo_data, GL_STATIC_DRAW);
+        memcpy(_ubo_data[_array_position]._position, glm::value_ptr(position), sizeof(GLfloat)*4);
+        memcpy(_ubo_data[_array_position]._diffuse, glm::value_ptr(diffuse), sizeof(GLfloat)*3);
+        memcpy(_ubo_data[_array_position]._ambient, glm::value_ptr(ambient), sizeof(GLfloat)*3);
+        memcpy(_ubo_data[_array_position]._specular, glm::value_ptr(specular), sizeof(GLfloat)*3);
+        glBufferSubData(GL_UNIFORM_BUFFER, _array_position*sizeof(_ubo_structure), sizeof(_ubo_structure), _ubo_data + _array_position);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    }
+
+    int Light::getArrayPosition() {
+        return _array_position;
     }
 
     GLuint Light::getUBO() {

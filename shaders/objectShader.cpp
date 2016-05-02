@@ -16,7 +16,9 @@ namespace marrow {
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_pos");
-        _light_data_bloc = getUniformBlockIndex("light_data");
+        _no_lights_loc = getUniformLocation("no_lights");
+        _light_indices_loc = getUniformLocation("light_indices");
+        _light_ubo_bloc = getUniformBlockIndex("light_ubo");
     }
 
     void ObjectShader::setModelMatrix(glm::mat4 model_matrix) {
@@ -41,15 +43,15 @@ namespace marrow {
     }
 
     void ObjectShader::setLights(std::list<Light *> & lights) {
-        auto it = lights.begin();
-        for(int i = 0; i < MAX_LIGHTS; i++) {
-            if(it == lights.end())
-                glBindBufferBase(GL_UNIFORM_BUFFER, _light_data_bloc + i, NO_LIGHT->getUBO());
-            else {
-                glBindBufferBase(GL_UNIFORM_BUFFER, _light_data_bloc + i, (*it)->getUBO());
-                it++;
-            }
+        glBindBufferBase(GL_UNIFORM_BUFFER, _light_ubo_bloc, Light::getUBO());
+        glUniform1i(_no_lights_loc, lights.size());
+        GLint lights_i[20];
+        int i = 0;
+        for(auto it: lights) {
+            lights_i[i] = it->getArrayPosition();
+            i++;
         }
+        glUniform1iv(_light_indices_loc, lights.size(), lights_i);
     }
 
 }

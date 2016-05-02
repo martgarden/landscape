@@ -9,12 +9,19 @@ uniform vec3 fog_color;
 uniform float fog_density;
 uniform vec3 eye_pos;
 
-layout (std140) uniform light_data {
+struct light_struct {
     vec4 position;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-} lights[4];
+};
+
+layout (std140) uniform light_ubo {
+    light_struct light_data[20];
+} lights;
+
+uniform int no_lights;
+uniform int light_indices[20];
 
 /*
 uniform vec3 material_ambient;
@@ -36,17 +43,17 @@ void main()
     N = normalize(VS_normal_ws);
     float Idiff, Ispec;
     vec3 light = vec3(0.0);
-    //for(int i = 0; i < 4; i++) {
-        L = normalize(lights[0].position.xyz - lights[0].position.w*VS_position_ws);
+    for(int i = 0; i < no_lights; i++) {
+        L = normalize(lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws);
         H = normalize(E + L);
 
         Idiff = max(dot(L, N), 0.0);
         Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
 
-        light += material_ambient * lights[0].ambient +
-        material_diffuse * lights[0].diffuse * Idiff +
-        material_specular * lights[0].specular * Ispec;
-    //}
+        light += material_ambient * lights.light_data[light_indices[i]].ambient +
+        material_diffuse * lights.light_data[light_indices[i]].diffuse * Idiff +
+        material_specular * lights.light_data[light_indices[i]].specular * Ispec;
+    }
 
     final_color = vec4(light, 1.0);
 }

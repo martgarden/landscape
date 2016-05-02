@@ -18,8 +18,9 @@ namespace marrow {
             int _fog_color_loc = -1;
             int _fog_density_loc = -1;
             int _eye_pos_loc = -1;
-            int _light_data_bloc = -1;
-            static const int MAX_LIGHTS = 4;
+            int _no_lights_loc = -1;
+            int _light_indices_loc = -1;
+            int _light_ubo_bloc = -1;
 
         public:
             static const int _normal_loc = 1;
