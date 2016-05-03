@@ -37,7 +37,7 @@ void main()
     vec3 material_ambient = vec3(1.0, 1.0, 1.0);
     vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
     vec3 material_specular = vec3(1.0, 1.0, 1.0);
-    float material_shininess = 0.05;
+    float material_shininess = 100.0;
     vec3 L, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
