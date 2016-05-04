@@ -10,10 +10,12 @@ uniform mat4 pvm_matrix;
 
 out vec3 VS_normal_ws;
 out vec3 VS_position_ws;
+out vec2 VS_tex_coord_ws;
 
 void main()
 {
     VS_normal_ws = normalize(normal * normal);
     VS_position_ws = (model_matrix * position).xyz;
+    VS_tex_coord_ws = tex_coord;
     gl_Position = pvm_matrix * position;
 }

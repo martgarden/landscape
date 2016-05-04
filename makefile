@@ -1,5 +1,5 @@
-legolas: main.o window.o initialiser.o light.o geometry.o object.o camera.o renderer.o
-	g++ -o legolas main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o shaders/shader.o shaders/objectShader.o -lGL -lGLU -lglut -lGLEW `pkg-config --libs IL` -std=c++11
+legolas: main.o window.o initialiser.o light.o geometry.o object.o camera.o renderer.o texture.o
+	g++ -o legolas main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o texture.o shaders/shader.o shaders/objectShader.o -lGL -lGLU -lglut -lGLEW `pkg-config --libs IL` -std=c++11
 main.o: main.cpp window.o
 	g++ -c -o main.o main.cpp -std=c++11
 window.o: window.hpp window.cpp initialiser.o
@@ -16,3 +16,5 @@ camera.o: camera.hpp camera.cpp
 	g++ -c -o camera.o camera.cpp -std=c++11
 renderer.o: renderer.hpp renderer.cpp
 	g++ -c -o renderer.o renderer.cpp -std=c++11
+texture.o: texture.hpp texture.cpp
+	g++ -c -o texture.o texture.cpp -std=c++11

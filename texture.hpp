@@ -1,6 +1,8 @@
 #ifndef MARROW_TEXTURE_H
 #define MARROW_TEXTURE_H
 
+#include <GL/glew.h>
+
 namespace marrow {
     class Texture {
         private:
@@ -15,9 +17,9 @@ namespace marrow {
             static Texture loadFromFile(const char * file_name);
             static Texture loadCubeFromFiles(const char * file_prefix);
             void set();
-            static void unset();
-            void setRepeat(bool set = true);
-            void setClamp(bool set = true);
+            void unset();
+            void setRepeat();
+            void setClamp();
     };
 }
 

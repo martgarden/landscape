@@ -63,7 +63,7 @@ namespace marrow {
 
                 // And now check whether the geometry is of a correct format (that it contains only triangles,
                 // and all vertices have their position, normal, and texture coordinate set).
-                
+
                 // Read the first vertex
                 file >> ws;        if (!isdigit(file.peek()))    {    error_msg();        return false;    }
                 file >> t.v0;

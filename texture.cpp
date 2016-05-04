@@ -1,5 +1,12 @@
 #include "texture.hpp"
 
+#include <iostream>
+
+#include <GL/glxew.h>            // Include on Linus and Mac
+#include <IL/il.h>
+
+using namespace std;
+
 namespace marrow {
     Texture::Texture() {;}
 
@@ -7,7 +14,7 @@ namespace marrow {
         *this = loadFromFile(file_name);
     }
 
-    Texture::Texture &operator =(const Texture &rhs) {
+    Texture &Texture::operator =(const Texture &rhs) {
         _tex_id = rhs._tex_id;
         _type = rhs._type;
     }
@@ -28,7 +35,7 @@ namespace marrow {
         if (!success) {
             ilBindImage(0);
             ilDeleteImages(1, &IL_tex); 
-            cout << "Couldn't load texture: " << filename;
+            cerr << "Couldn't load texture: " << filename;
             return false;
         }
 
@@ -54,7 +61,7 @@ namespace marrow {
             // Unsupported format
             ilBindImage(0);
             ilDeleteImages(1, &IL_tex); 
-            printf("Texture %S has unsupported format\n", filename);
+            cerr << "Texture " << filename << " has unsupported format\n";
             return false;
         }
 
@@ -77,11 +84,16 @@ namespace marrow {
         glBindTexture(GL_TEXTURE_2D, tex._tex_id);
 
         // Load the data into OpenGL texture object
-        if (!LoadAndSetTexture(filename, GL_TEXTURE_2D)) {
+        if (!LoadAndSetTexture(file_name, GL_TEXTURE_2D)) {
             glBindTexture(GL_TEXTURE_2D, 0);
             glDeleteTextures(1, &tex._tex_id);
             return 0;
         }
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 
         return tex;
@@ -120,18 +132,18 @@ namespace marrow {
         glBindTexture(_type, 0);
     }
 
-    void Texture::setRepeat(bool set) {
-        if(set) set();
-        glTexParametri(_type, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParametri(_type, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        else(set) unset();
+    void Texture::setRepeat() {
+        set();
+        glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        unset();
     }
 
-    void Texture::setClamp();
-        if(set) set();
-        glTexParametri(_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParametri(_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        else(set) unset();
+    void Texture::setClamp() {
+        set();
+        glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        unset();
     }
 
 }

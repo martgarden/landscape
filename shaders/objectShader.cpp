@@ -16,6 +16,7 @@ namespace marrow {
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_position");
+        _color_tex_loc = getUniformLocation("color_tex");
         _no_lights_loc = getUniformLocation("no_lights");
         _light_indices_loc = getUniformLocation("light_indices");
         _light_ubo_bloc = getUniformBlockIndex("light_ubo");
@@ -40,6 +41,10 @@ namespace marrow {
 
     void ObjectShader::setEyePos(const glm::vec3 & eye_pos) {
         glUniform3fv(_eye_pos_loc, 1, glm::value_ptr(eye_pos));
+    }
+
+    void ObjectShader::setColorTex(GLint slot) {
+        glUniform1i(_color_tex_loc, slot);
     }
 
     void ObjectShader::setLights(std::list<Light *> & lights) {

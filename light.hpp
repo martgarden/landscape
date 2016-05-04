@@ -28,8 +28,6 @@ namespace marrow {
             static GLuint getUBO();
 
     };
-
-    extern Light * NO_LIGHT;
 }
 
 #endif

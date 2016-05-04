@@ -4,10 +4,12 @@ out vec4 final_color;
 
 in vec3 VS_normal_ws;
 in vec3 VS_position_ws;
+in vec2 VS_tex_coord_ws;
 
 uniform vec3 fog_color;
 uniform float fog_density;
 uniform vec3 eye_pos;
+uniform sampler2D color_tex;
 
 struct light_struct {
     vec4 position;
@@ -34,10 +36,13 @@ uniform vec3 eye_position;
 
 void main()
 {
-    vec3 material_ambient = vec3(1.0, 1.0, 1.0);
-    vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
+    float alpha =  texture(color_tex, VS_tex_coord_ws).a;
+    vec3 material_ambient = texture(color_tex, VS_tex_coord_ws).rgb;
+    vec3 material_diffuse = material_ambient;
     vec3 material_specular = vec3(1.0, 1.0, 1.0);
     float material_shininess = 100.0;
+    if(alpha < 0.5)
+        discard;
     vec3 L, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
