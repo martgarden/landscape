@@ -34,6 +34,10 @@ namespace marrow {
             left(span);
         if(keys_state[SDL_SCANCODE_D])
             right(span);
+        if(keys_state[SDL_SCANCODE_UP])
+            forward(span);
+        if(keys_state[SDL_SCANCODE_DOWN])
+            backward(span);
         update();
     }
 
@@ -58,5 +62,13 @@ namespace marrow {
 
     void Camera::down(float time) {
         _elevation -= time * _rotation_speed;
+    }
+
+    void Camera::forward(float time) {
+        _eye_position += time * _movement_speed * _direction;
+    }
+
+    void Camera::backward(float time) {
+        _eye_position -= time * _movement_speed * _direction;
     }
 }

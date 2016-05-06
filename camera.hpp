@@ -9,7 +9,8 @@ namespace marrow {
             glm::vec3 _eye_position;
             float _rotation;
             float _elevation;
-            const float _rotation_speed = 0.05f;
+            const float _rotation_speed = 0.3f;
+            const float _movement_speed = 1.5f;
             glm::vec3 _direction;
             glm::vec3 _normal;
 
@@ -27,6 +28,8 @@ namespace marrow {
             void right(float time);
             void up(float time);
             void down(float time);
+            void forward(float time);
+            void backward(float time);
 
     };
 }
