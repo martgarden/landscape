@@ -10,7 +10,7 @@ namespace marrow {
         public:
             Initialiser();
 
-            static void init(int argc, char ** argv);
+            static void init();
 
             static void afterInit();
     };

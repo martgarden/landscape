@@ -1,6 +1,7 @@
 #include "camera.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <SDL2/SDL.h>
 
 namespace marrow {
     void Camera::update() {
@@ -23,6 +24,19 @@ namespace marrow {
         update();
     }
 
+    void Camera::tick(float span) {
+        const Uint8 * keys_state = SDL_GetKeyboardState(NULL);
+        if(keys_state[SDL_SCANCODE_W])
+            up(span);
+        if(keys_state[SDL_SCANCODE_S])
+            down(span);
+        if(keys_state[SDL_SCANCODE_A])
+            left(span);
+        if(keys_state[SDL_SCANCODE_D])
+            right(span);
+        update();
+    }
+
     glm::vec3 Camera::getEyePosition() {
         return _eye_position;
     }
@@ -32,21 +46,17 @@ namespace marrow {
     }
     void Camera::left(float time) {
         _rotation -= time * _rotation_speed;
-        update();
     }
 
     void Camera::right(float time) {
         _rotation += time * _rotation_speed;
-        update();
     }
 
     void Camera::up(float time) {
         _elevation += time * _rotation_speed;
-        update();
     }
 
     void Camera::down(float time) {
         _elevation -= time * _rotation_speed;
-        update();
     }
 }

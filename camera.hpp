@@ -19,6 +19,8 @@ namespace marrow {
             Camera(glm::vec3 eye_position, glm::vec3 direction, glm::vec3 normal);
             Camera(glm::vec3 eye_position, float rotation, float elevation);
 
+            void tick(float span);
+
             glm::vec3 getEyePosition();
             glm::mat4 getViewMatrix();
             void left(float time);

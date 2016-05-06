@@ -1,13 +1,17 @@
 #include "renderer.hpp"
 
+#include "window.hpp"
+
 #include <glm/gtc/matrix_transform.hpp>
-#include <GL/freeglut.h>
+#include <SDL2/SDL.h>
 
 namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList() {
         //_terrain_shader = TerrainShader();
         _object_shader = ObjectShader();
-        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(glutGet(GLUT_WINDOW_WIDTH)) / float(glutGet(GLUT_WINDOW_HEIGHT)), 0.1f, 1000.0f);
+        int w, h;
+        SDL_GetWindowSize(Window::getCurrentWindow(), &w, &h);
+        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(w) / float(h), 0.1f, 1000.0f);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearDepth(1.0);
         glEnable(GL_DEPTH_TEST);
