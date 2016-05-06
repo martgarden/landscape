@@ -25,6 +25,10 @@ namespace marrow {
         _lightList.push_back(newLight);
     }
 
+    void Renderer::addTerrain(Terrain * newTerrain) {
+        _terrain = newTerrain;
+    }
+
     void Renderer::render(Camera & camera) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
@@ -36,6 +40,15 @@ namespace marrow {
         for(auto i: _objectList) {
             i->draw(&_object_shader, pv_matrix, def_mod_matrix);
         }
-        _object_shader.unset();
+        if(_terrain != NULL) {
+            _object_shader.unset();
+            _terrain_shader.set();
+            _terrain_shader.setFog(_fogColor, _fogDensity);
+            _terrain_shader.setLights(_lightList);
+            _terrain_shader.setEyePos(camera.getEyePosition());
+            _terrain_shader.setPVMatrix(pv_matrix);
+            _terrain->draw(&_terrain_shader);
+            _terrain_shader.unset();
+        }
     }
 }

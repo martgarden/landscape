@@ -201,6 +201,36 @@ namespace marrow {
         *this = loadOBJ(file_name);
     }
 
+    Geometry::Geometry(float * vertices, int v_count, GLushort * indices, int i_count) {
+        glGenBuffers(1, _vertex_buffers);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffers[0]);
+        glBufferData(GL_ARRAY_BUFFER, v_count * sizeof(float) * 2, vertices, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glGenBuffers(1, &_index_buffer);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _index_buffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, i_count * sizeof(GLushort), indices, GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        // Create a vertex array object for the geometry
+        glGenVertexArrays(1, &_vao_id);
+
+        // Set the parameters of the geometry
+        glBindVertexArray(_vao_id);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffers[0]);
+        glEnableVertexAttribArray(ObjectShader::_position_loc);
+        glVertexAttribPointer(ObjectShader::_position_loc, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _index_buffer);
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        _draw_mode = GL_TRIANGLES;
+        _draw_arrays_count = 0;
+        _draw_elemetnts_count = i_count;
+    }
+
     Geometry &Geometry::operator =(const Geometry &rhs) {
         _vertex_buffers[0] = rhs._vertex_buffers[0];
         _vertex_buffers[1] = rhs._vertex_buffers[1];

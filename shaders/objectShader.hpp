@@ -24,9 +24,6 @@ namespace marrow {
             int _light_ubo_bloc = -1;
 
         public:
-            static const int _normal_loc = 1;
-            static const int _tex_coord_loc = 2;
-
             ObjectShader();
 
             void setModelMatrix(glm::mat4 model_matrix);

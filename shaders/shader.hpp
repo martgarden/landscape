@@ -16,6 +16,8 @@ namespace marrow {
 
         public:
             static const int _position_loc = 0;
+            static const int _normal_loc = 1;
+            static const int _tex_coord_loc = 2;
 
             void set();
             static void unset();
