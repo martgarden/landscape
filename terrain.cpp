@@ -12,10 +12,8 @@ namespace marrow {
             for(int i = 0; i < SIZE; i++) {
                 for(int j = 0; j < SIZE; j++) {
                     *it = float(j) / SIZE;
-                    std::cerr<<*it<<"x";
                     it++;
                     *it = float(i) / SIZE;
-                    std::cerr<<*it<<" ";
                     it++;
                 }
             }

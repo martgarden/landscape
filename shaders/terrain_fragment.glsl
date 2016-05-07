@@ -36,8 +36,7 @@ uniform vec3 eye_position;
 
 void main()
 {
-    float alpha =  texture(background_tex, VS_tex_coord_ws).a;
-    vec3 material_ambient = texture(background_tex, VS_tex_coord_ws).rgb;
+    vec3 material_ambient = texture(background_tex, VS_tex_coord_ws * 5.0).rgb;
     vec3 material_diffuse = material_ambient;
     vec3 material_specular = vec3(1.0, 1.0, 1.0);
     float material_shininess = 100.0;
