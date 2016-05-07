@@ -12,8 +12,12 @@ namespace marrow {
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_position");
-        _height_map_loc = getUniformLocation("_height_map");
+        _height_map_loc = getUniformLocation("height_map");
+        _brgb_map_loc = getUniformLocation("brgb_map");
         _background_tex_loc = getUniformLocation("background_tex");
+        _red_tex_loc = getUniformLocation("red_tex");
+        _green_tex_loc = getUniformLocation("green_tex");
+        _blue_tex_loc = getUniformLocation("blue_tex");
         _no_lights_loc = getUniformLocation("no_lights");
         _light_indices_loc = getUniformLocation("light_indices");
         _light_ubo_bloc = getUniformBlockIndex("light_ubo");
@@ -36,8 +40,24 @@ namespace marrow {
         glUniform1i(_height_map_loc, slot);
     }
 
+    void TerrainShader::setBRGBMap(GLint slot) {
+        glUniform1i(_brgb_map_loc, slot);
+    }
+
     void TerrainShader::setBackgroundTex(GLint slot) {
         glUniform1i(_background_tex_loc, slot);
+    }
+
+    void TerrainShader::setRedTex(GLint slot) {
+        glUniform1i(_red_tex_loc, slot);
+    }
+
+    void TerrainShader::setGreenTex(GLint slot) {
+        glUniform1i(_green_tex_loc, slot);
+    }
+
+    void TerrainShader::setBlueTex(GLint slot) {
+        glUniform1i(_blue_tex_loc, slot);
     }
 
     void TerrainShader::setLights(std::list<Light *> & lights) {

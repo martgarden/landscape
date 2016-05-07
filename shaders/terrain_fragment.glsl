@@ -9,7 +9,11 @@ in vec2 VS_tex_coord_ws;
 uniform vec3 fog_color;
 uniform float fog_density;
 uniform vec3 eye_pos;
+uniform sampler2D brgb_map;
 uniform sampler2D background_tex;
+uniform sampler2D red_tex;
+uniform sampler2D green_tex;
+uniform sampler2D blue_tex;
 
 struct light_struct {
     vec4 position;
@@ -36,7 +40,13 @@ uniform vec3 eye_position;
 
 void main()
 {
-    vec3 material_ambient = texture(background_tex, VS_tex_coord_ws * 5.0).rgb;
+    vec2 tiled_tex_coord = 5.0 * VS_tex_coord_ws;
+    vec4 brgb = texture(brgb_map, VS_tex_coord_ws);
+    float background_level = 1-(brgb.r + brgb.g + brgb.b);
+    vec3 material_ambient = (texture(background_tex, tiled_tex_coord) * background_level +
+                             texture(red_tex, tiled_tex_coord) * brgb.r +
+                             texture(green_tex, tiled_tex_coord) * brgb.g +
+                             texture(blue_tex, tiled_tex_coord) * brgb.b).rgb;
     vec3 material_diffuse = material_ambient;
     vec3 material_specular = vec3(1.0, 1.0, 1.0);
     float material_shininess = 100.0;

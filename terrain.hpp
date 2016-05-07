@@ -11,10 +11,14 @@ namespace marrow {
             const static int SIZE = 250;
             static Geometry  * _model;
             Texture * _height_map;
+            Texture * _brgb_map;
             Texture * _background_texture;
+            Texture * _red_texture;
+            Texture * _green_texture;
+            Texture * _blue_texture;
 
         public:
-            Terrain(Texture * height_map, Texture * background_texture);
+            Terrain(Texture * height_map, Texture * brgb_map, Texture * background_texture, Texture * red_texture, Texture * green_texture, Texture * blue_texture);
 
             void draw(TerrainShader * shader);
     };

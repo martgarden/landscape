@@ -27,8 +27,12 @@ int main(int argc, char ** argv) {
     renderer.addObject(&house);
     renderer.addLight(&light);
     marrow::Texture heights("tex/height_map.png");
-    marrow::Texture cobble("tex/Cobblestone.png");
-    marrow::Terrain terrain(&heights, &cobble);
+    marrow::Texture brgb("tex/brgb_map.png");
+    marrow::Texture background("tex/dirt.png");
+    marrow::Texture red("tex/sand.png");
+    marrow::Texture green("tex/grass.png");
+    marrow::Texture blue("tex/Cobblestone.png");
+    marrow::Terrain terrain(&heights, &brgb, &background, &red, &green, &blue);
     renderer.addTerrain(&terrain);
     bool done = false;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now(), t2;
