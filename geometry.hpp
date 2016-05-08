@@ -23,7 +23,7 @@ namespace marrow {
             Geometry(const Geometry &rhs);
             Geometry &operator =(const Geometry &rhs);
             Geometry(const char * file_name);
-            Geometry(float * vertices, int v_count, GLushort * indices, int i_count);
+            Geometry(float * vertices, int v_count, int v_dim, GLushort * indices, int i_count);
 
             static Geometry loadOBJ(const char * file_name);
 

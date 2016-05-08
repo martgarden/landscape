@@ -30,7 +30,7 @@ namespace marrow {
                     it2 += 6;
                 }
             }
-            _model = new Geometry(vertices, SIZE*SIZE*2, indices, (SIZE-1)*(SIZE-1)*6);
+            _model = new Geometry(vertices, SIZE*SIZE*2, 2, indices, (SIZE-1)*(SIZE-1)*6);
         }
         _height_map = height_map;
         _height_map->setClamp();

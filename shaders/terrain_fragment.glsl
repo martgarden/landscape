@@ -40,7 +40,7 @@ uniform vec3 eye_position;
 
 void main()
 {
-    vec2 tiled_tex_coord = 5.0 * VS_tex_coord_ws;
+    vec2 tiled_tex_coord = 15.0 * VS_tex_coord_ws;
     vec4 brgb = texture(brgb_map, VS_tex_coord_ws);
     float background_level = 1-(brgb.r + brgb.g + brgb.b);
     vec3 material_ambient = (texture(background_tex, tiled_tex_coord) * background_level +

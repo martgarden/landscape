@@ -10,6 +10,8 @@
 
 int main(int argc, char ** argv) {
     marrow::Window window(1000, 800, "Legolas");
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
     marrow::Camera camera(glm::vec3(0.0f, 0.0f, -10.0f), 0, 0);
     marrow::Geometry cabinet("obj/pino.obj");
     marrow::Texture plantex("tex/pino.png");
@@ -20,12 +22,15 @@ int main(int argc, char ** argv) {
     marrow::Texture houset("tex/house.png");
     marrow::Object house(&houseg, &houset, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 25.0)));;
     marrow::Light light(glm::vec4(10.0f, 5.0f, 0.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f));
+    marrow::Texture day = marrow::Texture::loadCubeFromFiles("tex/Day", ".png");
+    marrow::Skybox skybox(&day, &day, &light, &light, 0);
     marrow::Renderer renderer;
     renderer.addObject(&cabob);
     renderer.addObject(&cabob2);
     renderer.addObject(&cabob3);
     renderer.addObject(&house);
     renderer.addLight(&light);
+    renderer.setSkybox(&skybox);
     marrow::Texture heights("tex/height_map.png");
     marrow::Texture brgb("tex/brgb_map.png");
     marrow::Texture background("tex/dirt.png");
@@ -50,6 +55,7 @@ int main(int argc, char ** argv) {
         t = t2;
         std::cout << 1/span << std::endl;
         camera.tick(span);
+        skybox.tick(span);
         renderer.render(camera);
         window.swap();
     }

@@ -4,8 +4,10 @@
 #include "camera.hpp"
 #include "shaders/objectShader.hpp"
 #include "shaders/terrainShader.hpp"
+#include "shaders/skyboxShader.hpp"
 #include "object.hpp"
 #include "terrain.hpp"
+#include "skybox.hpp"
 
 #include <list>
 
@@ -16,12 +18,12 @@ namespace marrow {
             const float _fogDensity = 0.1;
             TerrainShader _terrain_shader;
             ObjectShader _object_shader;
-            //SkyboxShader _skybox_shader;
+            SkyboxShader _skybox_shader;
             glm::mat4 _projectionMatrix;
             std::list<Object *> _objectList;
             std::list<Light *> _lightList;
             Terrain * _terrain = NULL;
-            //Skybox _skybox;
+            Skybox * _skybox = NULL;
 
         public:
             Renderer();
@@ -29,6 +31,7 @@ namespace marrow {
             void addObject(Object * newObject);
             void addLight(Light * newLight);
             void addTerrain(Terrain * newTerrain);
+            void setSkybox(Skybox * skybox);
             void render(Camera & camera);
     };
 }

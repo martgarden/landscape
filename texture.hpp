@@ -15,7 +15,7 @@ namespace marrow {
             Texture &operator =(const Texture &rhs);
 
             static Texture loadFromFile(const char * file_name);
-            static Texture loadCubeFromFiles(const char * file_prefix);
+            static Texture loadCubeFromFiles(const char * file_prefix, const char * file_appendix);
             void set();
             void unset();
             void setRepeat();

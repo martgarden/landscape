@@ -5,10 +5,6 @@
 namespace marrow {
     ObjectShader::ObjectShader() {
         createAndLinkProgram("shaders/object_vertex.glsl", "shaders/object_fragment.glsl");
-        //in
-        setInLocation(_position_loc, "position");
-        setInLocation(_normal_loc, "normal");
-        setInLocation(_tex_coord_loc, "tex_coord");
         //uniform
         _model_matrix_loc = getUniformLocation("model_matrix");
         _normal_matrix_loc = getUniformLocation("normal_matrix");

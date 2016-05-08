@@ -1,5 +1,5 @@
-legolas: main.o window.o initialiser.o light.o geometry.o object.o camera.o renderer.o texture.o terrain.o
-	g++ -o legolas main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o texture.o terrain.o shaders/shader.o shaders/objectShader.o shaders/terrainShader.o -lGL -lGLU -lGLEW `pkg-config --libs IL sdl2` -std=c++11
+legolas: main.o window.o initialiser.o light.o geometry.o object.o camera.o renderer.o texture.o terrain.o skybox.o
+	g++ -o legolas main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o texture.o terrain.o skybox.o shaders/shader.o shaders/objectShader.o shaders/terrainShader.o shaders/skyboxShader.o -lGL -lGLU -lGLEW `pkg-config --libs IL sdl2` -std=c++11
 main.o: main.cpp window.o
 	g++ -c -o main.o main.cpp -std=c++11
 window.o: window.hpp window.cpp initialiser.o
@@ -20,3 +20,5 @@ texture.o: texture.hpp texture.cpp
 	g++ -c -o texture.o texture.cpp -std=c++11
 terrain.o: terrain.hpp terrain.cpp
 	g++ -c -o terrain.o terrain.cpp -std=c++11
+skybox.o: skybox.hpp skybox.cpp
+	g++ -c -o skybox.o skybox.cpp -std=c++11

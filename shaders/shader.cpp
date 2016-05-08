@@ -75,6 +75,9 @@ namespace marrow {
         GLuint program = glCreateProgram();
         glAttachShader(program, vs_shader);
         glAttachShader(program, fs_shader);
+        glBindAttribLocation(program, _position_loc, "position");
+        glBindAttribLocation(program, _tex_coord_loc, "tex_coord");
+        glBindAttribLocation(program, _normal_loc, "normal");
         glLinkProgram(program);
 
         int link_status;
@@ -92,12 +95,6 @@ namespace marrow {
             return;
         }
         else _program_id = program;
-    }
-
-    void Shader::setInLocation(int index, const char * in_name) {
-        if(_program_id == 0)
-            return;
-        glBindAttribLocation(_program_id, index, in_name);
     }
 
     int Shader::getUniformLocation(const char * uniform_name) {

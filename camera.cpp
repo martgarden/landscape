@@ -49,19 +49,19 @@ namespace marrow {
         return glm::lookAt(_eye_position, _eye_position + _direction, _normal);
     }
     void Camera::left(float time) {
-        _rotation -= time * _rotation_speed;
-    }
-
-    void Camera::right(float time) {
         _rotation += time * _rotation_speed;
     }
 
+    void Camera::right(float time) {
+        _rotation -= time * _rotation_speed;
+    }
+
     void Camera::up(float time) {
-        _elevation += time * _rotation_speed;
+        _elevation -= time * _rotation_speed;
     }
 
     void Camera::down(float time) {
-        _elevation -= time * _rotation_speed;
+        _elevation += time * _rotation_speed;
     }
 
     void Camera::forward(float time) {

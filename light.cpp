@@ -20,14 +20,23 @@ namespace marrow {
         setParams(position, ambient, diffuse, specular);
     }
 
-    void Light::setParams(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {
+    void Light::update() {
         glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
+        glBufferSubData(GL_UNIFORM_BUFFER, _array_position*sizeof(_ubo_structure), sizeof(_ubo_structure), _ubo_data + _array_position);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    }
+
+    void Light::setParams(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {
         memcpy(_ubo_data[_array_position]._position, glm::value_ptr(position), sizeof(GLfloat)*4);
         memcpy(_ubo_data[_array_position]._diffuse, glm::value_ptr(diffuse), sizeof(GLfloat)*3);
         memcpy(_ubo_data[_array_position]._ambient, glm::value_ptr(ambient), sizeof(GLfloat)*3);
         memcpy(_ubo_data[_array_position]._specular, glm::value_ptr(specular), sizeof(GLfloat)*3);
-        glBufferSubData(GL_UNIFORM_BUFFER, _array_position*sizeof(_ubo_structure), sizeof(_ubo_structure), _ubo_data + _array_position);
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
+        update();
+    }
+
+    void Light::setPosition(glm::vec4 position) {
+        memcpy(_ubo_data[_array_position]._position, glm::value_ptr(position), sizeof(GLfloat)*4);
+        update();
     }
 
     int Light::getArrayPosition() {

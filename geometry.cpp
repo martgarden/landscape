@@ -201,7 +201,7 @@ namespace marrow {
         *this = loadOBJ(file_name);
     }
 
-    Geometry::Geometry(float * vertices, int v_count, GLushort * indices, int i_count) {
+    Geometry::Geometry(float * vertices, int v_count, int v_dim, GLushort * indices, int i_count) {
         glGenBuffers(1, _vertex_buffers);
         glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffers[0]);
         glBufferData(GL_ARRAY_BUFFER, v_count * sizeof(float) * 2, vertices, GL_STATIC_DRAW);
@@ -219,7 +219,7 @@ namespace marrow {
         glBindVertexArray(_vao_id);
         glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffers[0]);
         glEnableVertexAttribArray(ObjectShader::_position_loc);
-        glVertexAttribPointer(ObjectShader::_position_loc, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glVertexAttribPointer(ObjectShader::_position_loc, v_dim, GL_FLOAT, GL_FALSE, 0, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _index_buffer);
 
         glBindVertexArray(0);

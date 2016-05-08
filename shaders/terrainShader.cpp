@@ -5,8 +5,6 @@
 namespace marrow {
     TerrainShader::TerrainShader() {
         createAndLinkProgram("shaders/terrain_vertex.glsl", "shaders/terrain_fragment.glsl");
-        //in
-        setInLocation(_position_loc, "position");
         //uniform
         _pv_matrix_loc = getUniformLocation("pv_matrix");
         _fog_color_loc = getUniformLocation("fog_color");

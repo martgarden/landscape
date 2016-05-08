@@ -99,7 +99,7 @@ namespace marrow {
         return tex;
     }
 
-    Texture Texture::loadCubeFromFiles(const char * file_prefix) {
+    Texture Texture::loadCubeFromFiles(const char * file_prefix, const char * file_appendix) {
         // Create OpenGL texture object
         Texture tex;
         tex._type = GL_TEXTURE_CUBE_MAP;
@@ -109,16 +109,22 @@ namespace marrow {
 
         // Load the data into OpenGL texture object
         if (
-            !LoadAndSetTexture((name_string + "R").c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_X) ||
-            !LoadAndSetTexture((name_string + "L").c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_X) ||
-            !LoadAndSetTexture((name_string + "U").c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_Y) ||
-            !LoadAndSetTexture((name_string + "D").c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_Y) ||
-            !LoadAndSetTexture((name_string + "F").c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_Z) ||
-            !LoadAndSetTexture((name_string + "B").c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_Z)) {
+            !LoadAndSetTexture((name_string + "R" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_X) ||
+            !LoadAndSetTexture((name_string + "L" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_X) ||
+            !LoadAndSetTexture((name_string + "U" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_Y) ||
+            !LoadAndSetTexture((name_string + "D" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_Y) ||
+            !LoadAndSetTexture((name_string + "F" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_POSITIVE_Z) ||
+            !LoadAndSetTexture((name_string + "B" + file_appendix).c_str(), GL_TEXTURE_CUBE_MAP_NEGATIVE_Z)) {
             glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
             glDeleteTextures(1, &tex._tex_id);
-            return 0;
+            cerr << "Unable to load cubemap " << name_string << "*" << file_appendix << " :-)" << endl;
+            return Texture();
         }
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
         return tex;

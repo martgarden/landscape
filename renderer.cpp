@@ -7,8 +7,6 @@
 
 namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList() {
-        //_terrain_shader = TerrainShader();
-        _object_shader = ObjectShader();
         int w, h;
         SDL_GetWindowSize(Window::getCurrentWindow(), &w, &h);
         _projectionMatrix = glm::perspective(glm::radians(45.0f), float(w) / float(h), 0.1f, 1000.0f);
@@ -29,19 +27,24 @@ namespace marrow {
         _terrain = newTerrain;
     }
 
+    void Renderer::setSkybox(Skybox * skybox) {
+        _skybox = skybox;
+    }
+
     void Renderer::render(Camera & camera) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
         _object_shader.setFog(_fogColor, _fogDensity);
         _object_shader.setLights(_lightList);
         _object_shader.setEyePos(camera.getEyePosition());
-        glm::mat4 pv_matrix = _projectionMatrix * camera.getViewMatrix();
+        glm::mat4 view_matrix = camera.getViewMatrix();
+        glm::mat4 pv_matrix = _projectionMatrix * view_matrix;
         glm::mat4 def_mod_matrix = glm::mat4(1.0f);
         for(auto i: _objectList) {
             i->draw(&_object_shader, pv_matrix, def_mod_matrix);
         }
+        _object_shader.unset();
         if(_terrain != NULL) {
-            _object_shader.unset();
             _terrain_shader.set();
             _terrain_shader.setFog(_fogColor, _fogDensity);
             _terrain_shader.setLights(_lightList);
@@ -49,6 +52,11 @@ namespace marrow {
             _terrain_shader.setPVMatrix(pv_matrix);
             _terrain->draw(&_terrain_shader);
             _terrain_shader.unset();
+        }
+        if(_skybox != NULL) {
+            _skybox_shader.set();
+            _skybox->draw(&_skybox_shader, view_matrix, _projectionMatrix);
+            _skybox_shader.unset();
         }
     }
 }
