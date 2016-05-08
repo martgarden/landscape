@@ -54,11 +54,11 @@ namespace marrow {
             rdt = DAY - _day_time;
         rdt = rdt*(24.0f/DAY); //hours
         //sun
-        if(rdt < 5.0f*DAY)
+        if(rdt < 5.0f)
             _sun_color = (1-(rdt/5.0f))*glm::vec3(1.0, 1.0, 0.3) + (rdt/5.0f)*glm::vec3(1.0, 0.2, 0.05);
-        else if(rdt < 7.0f*DAY)
+        else if(rdt < 7.0f)
             _sun_color = (1-((rdt-5.0f)/2.0f))*glm::vec3(1.0, 0.2, 0.05) + ((rdt-5.0f)/2.0f)*glm::vec3(0.1, 0.0, 0.45);
-        else if(rdt < 7.5f*DAY)
+        else if(rdt < 7.5f)
             _sun_color = (1-((rdt-7.0f)/0.5f))*glm::vec3(0.1, 0.0, 0.45) + ((rdt-7.0f)/0.5f)*glm::vec3(0.0, 0.0, 0.0);
         else
             _sun_color = glm::vec3(0.0, 0.0, 0.0);
