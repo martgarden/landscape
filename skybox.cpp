@@ -63,6 +63,14 @@ namespace marrow {
         else
             _sun_color = glm::vec3(0.0, 0.0, 0.0);
         _sun_light->setParams(_sun_vec, _sun_color*0.2f, _sun_color*0.4f, _sun_color + glm::vec3(1.0, 1.0, 1.0));
+        //moon
+        if(rdt > 8.0f)
+            _moon_color = glm::vec3(1.0, 1.0, 1.0);
+        else if(rdt > 6.0f)
+            _moon_color = ((rdt-6.0f)/2.0f)*glm::vec3(1.0, 1.0, 1.0);
+        else
+            _moon_color = glm::vec3(0.0, 0.0, 0.0);
+        _moon_light->setParams(-_sun_vec, _moon_color*0.05f, _moon_color*0.2f, _moon_color);
     }
 
     void Skybox::draw(SkyboxShader * shader, glm::mat4 view_matrix, glm::mat4 projection_matrix) {

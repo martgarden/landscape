@@ -11,7 +11,7 @@ namespace marrow {
         _night_tex_loc = getUniformLocation("night_tex");
         _sun_pos_loc = getUniformLocation("sun_pos");
         _sun_color_loc = getUniformLocation("sun_color");
-        _moon_color_loc = -1;
+        _moon_color_loc = getUniformLocation("moon_color");
     }
 
     void SkyboxShader::setPVMatrix(glm::mat4 pv_matrix) {
