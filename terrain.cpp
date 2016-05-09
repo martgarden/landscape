@@ -35,6 +35,7 @@ namespace marrow {
         _height_map = height_map;
         _height_map->setClamp();
         _brgb_map = brgb_map;
+        _brgb_map->setClamp();
         _background_texture = background_texture;
         _red_texture = red_texture;
         _green_texture = green_texture;
