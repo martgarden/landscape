@@ -8,7 +8,7 @@ out vec3 VS_tex_coord_ws;
 
 void main()
 {
-    vec3 scale = vec3(200.0, 200.0, 200.0);
+    vec3 scale = vec3(500.0, 500.0, 500.0);
     VS_tex_coord_ws = position;
     gl_Position = pv_matrix * vec4((scale * position), 1.0);
 }

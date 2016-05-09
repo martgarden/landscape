@@ -55,8 +55,11 @@ namespace marrow {
         case IL_BGR:    internal_format = GL_RGB;    format = GL_BGR;    break;
         case IL_BGRA:    internal_format = GL_RGBA;    format = GL_BGRA;    break;
         case IL_COLOR_INDEX:
+        cerr<<"b";
         case IL_ALPHA:
+        cerr<<"b";
         case IL_LUMINANCE:
+        cerr<<"b";
         case IL_LUMINANCE_ALPHA:
             // Unsupported format
             ilBindImage(0);
