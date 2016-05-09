@@ -41,7 +41,7 @@ int main(int argc, char ** argv) {
     marrow::Texture green("tex/grass.png");
     marrow::Texture blue("tex/Cobblestone.png");
     marrow::Terrain terrain(&heights, &brgb, &background, &red, &green, &blue);
-    renderer.addTerrain(&terrain);
+    renderer.addTerrain(std::make_pair(-1, 0), &terrain);
     bool done = false;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now(), t2;
     double span;

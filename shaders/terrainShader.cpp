@@ -10,6 +10,8 @@ namespace marrow {
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_position");
+        _x_off_loc = getUniformLocation("x_off");
+        _z_off_loc = getUniformLocation("z_off");
         _height_map_loc = getUniformLocation("height_map");
         _brgb_map_loc = getUniformLocation("brgb_map");
         _background_tex_loc = getUniformLocation("background_tex");
@@ -32,6 +34,11 @@ namespace marrow {
 
     void TerrainShader::setEyePos(const glm::vec3 & eye_pos) {
         glUniform3fv(_eye_pos_loc, 1, glm::value_ptr(eye_pos));
+    }
+
+    void TerrainShader::setOff(GLint x_off, GLint z_off) {
+        glUniform1i(_x_off_loc, x_off);
+        glUniform1i(_z_off_loc, z_off);
     }
 
     void TerrainShader::setHeightMap(GLint slot) {

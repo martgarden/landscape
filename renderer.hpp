@@ -10,6 +10,7 @@
 #include "skybox.hpp"
 
 #include <list>
+#include <map>
 
 namespace marrow {
     class Renderer {
@@ -22,7 +23,7 @@ namespace marrow {
             glm::mat4 _projectionMatrix;
             std::list<Object *> _objectList;
             std::list<Light *> _lightList;
-            Terrain * _terrain = NULL;
+            std::map<std::pair<GLint, GLint>, Terrain * > _terrainList;
             Skybox * _skybox = NULL;
 
         public:
@@ -30,7 +31,7 @@ namespace marrow {
 
             void addObject(Object * newObject);
             void addLight(Light * newLight);
-            void addTerrain(Terrain * newTerrain);
+            void addTerrain(std::pair<GLint, GLint> offset, Terrain * newTerrain);
             void setSkybox(Skybox * skybox);
             void render(Camera & camera);
     };

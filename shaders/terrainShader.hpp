@@ -16,6 +16,8 @@ namespace marrow {
             int _fog_color_loc = -1;
             int _fog_density_loc = -1;
             int _eye_pos_loc = -1;
+            int _x_off_loc = -1;
+            int _z_off_loc = -1;
             int _height_map_loc = -1;
             int _brgb_map_loc = -1;
             int _background_tex_loc = -1;
@@ -32,6 +34,7 @@ namespace marrow {
             void setPVMatrix(glm::mat4 pv_matrix);
             void setFog(const glm::vec3 & fog_color, const float fog_density);
             void setEyePos(const glm::vec3 & eye_pos);
+            void setOff(GLint x_off, GLint z_off);
             void setHeightMap(GLint slot);
             void setBRGBMap(GLint slot);
             void setBackgroundTex(GLint slot);

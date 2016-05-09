@@ -6,7 +6,7 @@
 #include <SDL2/SDL.h>
 
 namespace marrow {
-    Renderer::Renderer() : _objectList(), _lightList() {
+    Renderer::Renderer() : _objectList(), _lightList(), _terrainList() {
         int w, h;
         SDL_GetWindowSize(Window::getCurrentWindow(), &w, &h);
         _projectionMatrix = glm::perspective(glm::radians(45.0f), float(w) / float(h), 0.1f, 1000.0f);
@@ -23,8 +23,8 @@ namespace marrow {
         _lightList.push_back(newLight);
     }
 
-    void Renderer::addTerrain(Terrain * newTerrain) {
-        _terrain = newTerrain;
+    void Renderer::addTerrain(std::pair<GLint, GLint> offset, Terrain * newTerrain) {
+        _terrainList[offset] = newTerrain;
     }
 
     void Renderer::setSkybox(Skybox * skybox) {
@@ -44,15 +44,16 @@ namespace marrow {
             i->draw(&_object_shader, pv_matrix, def_mod_matrix);
         }
         _object_shader.unset();
-        if(_terrain != NULL) {
-            _terrain_shader.set();
-            _terrain_shader.setFog(_fogColor, _fogDensity);
-            _terrain_shader.setLights(_lightList);
-            _terrain_shader.setEyePos(camera.getEyePosition());
-            _terrain_shader.setPVMatrix(pv_matrix);
-            _terrain->draw(&_terrain_shader);
-            _terrain_shader.unset();
+        _terrain_shader.set();
+        _terrain_shader.setFog(_fogColor, _fogDensity);
+        _terrain_shader.setLights(_lightList);
+        _terrain_shader.setEyePos(camera.getEyePosition());
+        _terrain_shader.setPVMatrix(pv_matrix);
+        for(auto i: _terrainList) {
+            _terrain_shader.setOff(i.first.first, i.first.second);
+            i.second->draw(&_terrain_shader);
         }
+        _terrain_shader.unset();
         if(_skybox != NULL) {
             _skybox_shader.set();
             _skybox->draw(&_skybox_shader, view_matrix, _projectionMatrix);
