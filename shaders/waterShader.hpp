@@ -18,6 +18,7 @@ namespace marrow {
             int _fog_density_loc = -1;
             int _eye_pos_loc = -1;
             int _reflect_tex_loc = -1;
+            int _refract_tex_loc = -1;
             int _no_lights_loc = -1;
             int _light_indices_loc = -1;
             int _light_ubo_bloc = -1;
@@ -30,6 +31,7 @@ namespace marrow {
             void setFog(const glm::vec3 & fog_color, const float fog_density);
             void setEyePos(const glm::vec3 & eye_pos);
             void setReflectTex(GLint slot);
+            void setRefractTex(GLint slot);
             void setLights(std::list<Light *> & lights);
 
     };

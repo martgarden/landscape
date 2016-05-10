@@ -20,29 +20,35 @@ std::string toStr(int no) {
 
 int main(int argc, char ** argv) {
     marrow::Window window(1000, 800, "Legolas");
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
-    marrow::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), 0, 0);
-    marrow::Geometry cabinet("obj/pino.obj");
+    marrow::Camera camera(glm::vec3(0.0f, 30.0f, 0.0f), 0, 0);
+    marrow::Geometry cabinet("obj/npino.obj");
     marrow::Texture plantex("tex/pino.png");
     marrow::Object cabob(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 20.0, 1.0)));
     marrow::Object cabob2(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 1.0)));
     marrow::Object cabob3(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 10.0)));
+
     marrow::Geometry houseg("obj/house.obj");
     marrow::Texture houset("tex/house.png");
     marrow::Object house(&houseg, &houset, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 25.0)));;
-    marrow::Light light(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f));
-    marrow::Light light2(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f));
+
+    marrow::Geometry lampg("obj/nlamp.obj");
+    marrow::Texture lampt("tex/lamp.png");
+    marrow::Object lamp(&lampg, &lampt, glm::translate(glm::mat4(1.0), glm::vec3(0.0, 25.0, 0.0)));;
+    marrow::Light light(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    marrow::Light light2(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    marrow::Light light3(glm::vec4(0.0f, 28.2f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(2.5f, 10.5f, 2.5f), glm::vec3(0.4f, 5.0f, 0.0f), glm::vec3(1.0f, 0.1f, 0.1f));
     marrow::Texture day = marrow::Texture::loadCubeFromFiles("tex/Day", ".png");
     marrow::Texture night = marrow::Texture::loadCubeFromFiles("tex/Night", ".png");
-    marrow::Skybox skybox(&day, &night, &light, &light2, 30.0f);
+    marrow::Skybox skybox(&day, &night, &light, &light2, 50.0f);
     marrow::Renderer renderer;
     renderer.addObject(&cabob);
     renderer.addObject(&cabob2);
     renderer.addObject(&cabob3);
     renderer.addObject(&house);
+    renderer.addObject(&lamp);
     renderer.addLight(&light);
     renderer.addLight(&light2);
+    renderer.addLight(&light3);
     renderer.setSkybox(&skybox);
     std::string hs("tex/height_map");
     std::string bs("tex/brgb_map");
@@ -55,7 +61,7 @@ int main(int argc, char ** argv) {
             renderer.addTerrain(std::make_pair(i, j), new marrow::Terrain(new marrow::Texture((hs+toStr(i)+toStr(j)+".png").c_str()), new marrow::Texture((bs+toStr(i)+toStr(j)+".png").c_str()), &background, &red, &green, &blue));
         }
     }
-    marrow::Water water(0.0f, 0.0f, 150.0f, 150.0f);
+    marrow::Water water(30.0f, 50.0f, 210.0f, 210.0f);
     renderer.setWaterLevel(22.0f);
     renderer.addWater(&water);
     bool done = false;

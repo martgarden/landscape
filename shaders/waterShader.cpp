@@ -12,6 +12,7 @@ namespace marrow {
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_position");
         _reflect_tex_loc = getUniformLocation("reflect_tex");
+        _refract_tex_loc = getUniformLocation("refract_tex");
         _no_lights_loc = getUniformLocation("no_lights");
         _light_indices_loc = getUniformLocation("light_indices");
         _light_ubo_bloc = getUniformBlockIndex("light_ubo");
@@ -36,6 +37,10 @@ namespace marrow {
 
     void WaterShader::setReflectTex(GLint slot) {
         glUniform1i(_reflect_tex_loc, slot);
+    }
+
+    void WaterShader::setRefractTex(GLint slot) {
+        glUniform1i(_refract_tex_loc, slot);
     }
 
     void WaterShader::setLights(std::list<Light *> & lights) {

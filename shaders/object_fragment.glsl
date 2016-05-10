@@ -8,7 +8,7 @@ in vec2 VS_tex_coord_ws;
 
 uniform vec3 fog_color;
 uniform float fog_density;
-uniform vec3 eye_pos;
+uniform vec3 eye_position;
 uniform sampler2D color_tex;
 
 struct light_struct {
@@ -16,6 +16,7 @@ struct light_struct {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    vec3 attenuation;
 };
 
 layout (std140) uniform light_ubo {
@@ -32,7 +33,6 @@ uniform vec3 material_specular;
 uniform float material_shininess;
 */
 
-uniform vec3 eye_position;
 
 void main()
 {
@@ -60,5 +60,5 @@ void main()
         material_specular * lights.light_data[light_indices[i]].specular * Ispec;
     }
 
-    final_color = vec4(light, 1.0);
+    final_color = vec4(mix(light, fog_color, 1.0-clamp(exp(-fog_density*length(eye_position - VS_position_ws)), 0.0, 1.0)), 1.0);
 }

@@ -72,10 +72,10 @@ namespace marrow {
         _eye_position -= time * _movement_speed * _direction;
     }
 
-    void Camera::mirror(float height) {
-        _elevation = -_elevation;
+    int Camera::mirror(float height) {
+        _direction.y *= -1;
         _eye_position.y -= 2*(_eye_position.y - height);
-        update();
+        return (_eye_position.y < height ? 1 : -1);
     }
 
 }

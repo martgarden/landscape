@@ -7,7 +7,7 @@ namespace marrow {
     int Light::_last_used = -1;
     Light::_ubo_structure Light::_ubo_data[MAX_LIGHTS] = {0};
 
-    Light::Light(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {
+    Light::Light(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 attenuation) {
         if(_ubo_id == GL_INVALID_INDEX) {
             glGenBuffers(1, &_ubo_id);
             glBindBuffer(GL_UNIFORM_BUFFER, _ubo_id);
@@ -17,6 +17,7 @@ namespace marrow {
             return;
         _array_position = _last_used + 1;
         _last_used++;
+        memcpy(_ubo_data[_array_position]._attenuation, glm::value_ptr(attenuation), sizeof(GLfloat)*3);
         setParams(position, ambient, diffuse, specular);
     }
 

@@ -19,8 +19,8 @@ namespace marrow {
     class Renderer {
         private:
             int _w, _h;
-            const glm::vec3 _fogColor = glm::vec3(0.5f, 0.5f, 0.5f);
-            const float _fogDensity = 0.1;
+            const glm::vec3 _fogColor = glm::vec3(0.3f, 0.3f, 0.3f);
+            const float _fogDensity = 0.005;
             TerrainShader _terrain_shader;
             ObjectShader _object_shader;
             SkyboxShader _skybox_shader;
@@ -32,7 +32,8 @@ namespace marrow {
             std::list<Water *> _waterList;
             Skybox * _skybox = NULL;
             float _water_level = 0.0f;
-            Frame * _frame = NULL;
+            Frame * _frame_reflect = NULL;
+            Frame * _frame_refract = NULL;
 
         public:
             Renderer();

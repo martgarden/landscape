@@ -10,8 +10,9 @@
 namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList(), _terrainList(), _waterList() {
         SDL_GetWindowSize(Window::getCurrentWindow(), &_w, &_h);
-        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(_w) / float(_h), 0.1f, 700.0f);
-        _frame = new Frame(_w/2, _h/2);
+        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(_w) / float(_h), 0.1f, 610.0f);
+        _frame_reflect = new Frame(_w/4, _h/4);
+        _frame_refract = new Frame(_w/4, _h/4);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearDepth(1.0);
         glEnable(GL_DEPTH_TEST);
@@ -42,6 +43,7 @@ namespace marrow {
     }
 
     void Renderer::basic_render(Camera & camera, glm::vec4 clip_plane) {
+        glEnable(GL_CULL_FACE);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
         _object_shader.setClipPlane(clip_plane);
@@ -75,14 +77,19 @@ namespace marrow {
 
     void Renderer::render(Camera & camera) {
         glEnable(GL_CLIP_DISTANCE0);
-        _frame->set();
+        _frame_reflect->set();
+        glm::vec4 plane(0.0, 1.0, 0.0, -_water_level);
+        plane *= camera.mirror(_water_level);
+        basic_render(camera, plane);
         camera.mirror(_water_level);
-        basic_render(camera, glm::vec4(0.0, 1.0, 0.0, -_water_level));
-        camera.mirror(_water_level);
-        _frame->unset();
+        _frame_reflect->unset();
+        _frame_refract->set();
+        basic_render(camera, -plane);
+        _frame_refract->unset();
         glViewport(0, 0, _w, _h);
         glDisable(GL_CLIP_DISTANCE0);
         basic_render(camera, glm::vec4(0.0, 1.0, 0.0, 0.0));
+        glDisable(GL_CULL_FACE);
         _water_shader.set();
         _water_shader.setFog(_fogColor, _fogDensity);
         _water_shader.setLights(_lightList);
@@ -92,7 +99,10 @@ namespace marrow {
         _water_shader.setWaterLevel(_water_level);
         _water_shader.setReflectTex(0);
         glActiveTexture(GL_TEXTURE0);
-        _frame->getColorTex()->set();
+        _frame_reflect->getColorTex()->set();
+        _water_shader.setRefractTex(1);
+        glActiveTexture(GL_TEXTURE1);
+        _frame_refract->getColorTex()->set();
         for(auto i: _waterList) {
             i->draw();
             std::cerr<<"b";

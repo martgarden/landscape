@@ -55,14 +55,14 @@ namespace marrow {
         rdt = rdt*(24.0f/DAY); //hours
         //sun
         if(rdt < 5.0f)
-            _sun_color = (1-(rdt/5.0f))*glm::vec3(1.0, 1.0, 0.3) + (rdt/5.0f)*glm::vec3(1.0, 0.2, 0.05);
+            _sun_color = (1-(rdt/5.0f))*glm::vec3(1.0, 1.0, 0.5) + (rdt/5.0f)*glm::vec3(1.0, 0.2, 0.05);
         else if(rdt < 7.0f)
             _sun_color = (1-((rdt-5.0f)/2.0f))*glm::vec3(1.0, 0.2, 0.05) + ((rdt-5.0f)/2.0f)*glm::vec3(0.1, 0.0, 0.45);
         else if(rdt < 7.5f)
             _sun_color = (1-((rdt-7.0f)/0.5f))*glm::vec3(0.1, 0.0, 0.45) + ((rdt-7.0f)/0.5f)*glm::vec3(0.0, 0.0, 0.0);
         else
             _sun_color = glm::vec3(0.0, 0.0, 0.0);
-        _sun_light->setParams(_sun_vec, _sun_color*0.2f, _sun_color*0.4f, _sun_color + glm::vec3(1.0, 1.0, 1.0));
+        _sun_light->setParams(_sun_vec, _sun_color*0.2f, _sun_color*0.6f, _sun_color + glm::vec3(1.0, 1.0, 1.0));
         //moon
         if(rdt > 8.0f)
             _moon_color = glm::vec3(1.0, 1.0, 1.0);
