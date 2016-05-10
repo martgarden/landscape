@@ -12,6 +12,7 @@ namespace marrow {
         public:
             Texture();
             Texture(const char * file_name);
+            Texture(GLuint tex_id, GLenum type);
             Texture &operator =(const Texture &rhs);
 
             static Texture loadFromFile(const char * file_name);

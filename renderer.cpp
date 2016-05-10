@@ -5,11 +5,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <SDL2/SDL.h>
 
+#include <iostream>
+
 namespace marrow {
-    Renderer::Renderer() : _objectList(), _lightList(), _terrainList() {
-        int w, h;
-        SDL_GetWindowSize(Window::getCurrentWindow(), &w, &h);
-        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(w) / float(h), 0.1f, 1000.0f);
+    Renderer::Renderer() : _objectList(), _lightList(), _terrainList(), _waterList() {
+        SDL_GetWindowSize(Window::getCurrentWindow(), &_w, &_h);
+        _projectionMatrix = glm::perspective(glm::radians(45.0f), float(_w) / float(_h), 0.1f, 700.0f);
+        _frame = new Frame(_w/2, _h/2);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearDepth(1.0);
         glEnable(GL_DEPTH_TEST);
@@ -27,13 +29,22 @@ namespace marrow {
         _terrainList[offset] = newTerrain;
     }
 
+    void Renderer::addWater(Water * newWater) {
+        _waterList.push_back(newWater);
+    }
+
     void Renderer::setSkybox(Skybox * skybox) {
         _skybox = skybox;
     }
 
-    void Renderer::render(Camera & camera) {
+    void Renderer::setWaterLevel(float water_level) {
+        _water_level = water_level;
+    }
+
+    void Renderer::basic_render(Camera & camera, glm::vec4 clip_plane) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
+        _object_shader.setClipPlane(clip_plane);
         _object_shader.setFog(_fogColor, _fogDensity);
         _object_shader.setLights(_lightList);
         _object_shader.setEyePos(camera.getEyePosition());
@@ -45,6 +56,7 @@ namespace marrow {
         }
         _object_shader.unset();
         _terrain_shader.set();
+        _terrain_shader.setClipPlane(clip_plane);
         _terrain_shader.setFog(_fogColor, _fogDensity);
         _terrain_shader.setLights(_lightList);
         _terrain_shader.setEyePos(camera.getEyePosition());
@@ -58,6 +70,32 @@ namespace marrow {
             _skybox_shader.set();
             _skybox->draw(&_skybox_shader, view_matrix, _projectionMatrix);
             _skybox_shader.unset();
+        }
+    }
+
+    void Renderer::render(Camera & camera) {
+        glEnable(GL_CLIP_DISTANCE0);
+        _frame->set();
+        camera.mirror(_water_level);
+        basic_render(camera, glm::vec4(0.0, 1.0, 0.0, -_water_level));
+        camera.mirror(_water_level);
+        _frame->unset();
+        glViewport(0, 0, _w, _h);
+        glDisable(GL_CLIP_DISTANCE0);
+        basic_render(camera, glm::vec4(0.0, 1.0, 0.0, 0.0));
+        _water_shader.set();
+        _water_shader.setFog(_fogColor, _fogDensity);
+        _water_shader.setLights(_lightList);
+        _water_shader.setEyePos(camera.getEyePosition());
+        glm::mat4 pv_matrix = _projectionMatrix * camera.getViewMatrix();
+        _water_shader.setPVMatrix(pv_matrix);
+        _water_shader.setWaterLevel(_water_level);
+        _water_shader.setReflectTex(0);
+        glActiveTexture(GL_TEXTURE0);
+        _frame->getColorTex()->set();
+        for(auto i: _waterList) {
+            i->draw();
+            std::cerr<<"b";
         }
     }
 }

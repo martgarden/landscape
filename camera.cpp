@@ -71,4 +71,11 @@ namespace marrow {
     void Camera::backward(float time) {
         _eye_position -= time * _movement_speed * _direction;
     }
+
+    void Camera::mirror(float height) {
+        _elevation = -_elevation;
+        _eye_position.y -= 2*(_eye_position.y - height);
+        update();
+    }
+
 }

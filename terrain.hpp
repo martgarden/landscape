@@ -8,7 +8,7 @@
 namespace marrow {
     class Terrain {
         private:
-            const static int SIZE = 150;
+            const static int SIZE = 100;
             static Geometry  * _model;
             Texture * _height_map;
             Texture * _brgb_map;

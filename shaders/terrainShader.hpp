@@ -12,6 +12,7 @@ namespace marrow {
     class TerrainShader : public Shader {
         private:
             //uniform
+            int _clip_plane_loc = -1;
             int _pv_matrix_loc = -1;
             int _fog_color_loc = -1;
             int _fog_density_loc = -1;
@@ -31,6 +32,7 @@ namespace marrow {
         public:
             TerrainShader();
 
+            void setClipPlane(const glm::vec4 & plane);
             void setPVMatrix(glm::mat4 pv_matrix);
             void setFog(const glm::vec3 & fog_color, const float fog_density);
             void setEyePos(const glm::vec3 & eye_pos);

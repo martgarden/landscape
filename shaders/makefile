@@ -1,3 +1,5 @@
+waterShader.o: waterShader.cpp waterShader.hpp shader.o terrainShader.o objectShader.o skyboxShader.o
+	g++ -c -o waterShader.o waterShader.cpp -std=c++11
 skyboxShader.o: skyboxShader.cpp skyboxShader.hpp shader.o terrainShader.o objectShader.o
 	g++ -c -o skyboxShader.o skyboxShader.cpp -std=c++11
 terrainShader.o: terrainShader.cpp terrainShader.hpp objectShader.o shader.o

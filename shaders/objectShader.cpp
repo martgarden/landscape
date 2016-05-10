@@ -6,6 +6,7 @@ namespace marrow {
     ObjectShader::ObjectShader() {
         createAndLinkProgram("shaders/object_vertex.glsl", "shaders/object_fragment.glsl");
         //uniform
+        _clip_plane_loc = getUniformLocation("clip_plane");
         _model_matrix_loc = getUniformLocation("model_matrix");
         _normal_matrix_loc = getUniformLocation("normal_matrix");
         _pvm_matrix_loc = getUniformLocation("pvm_matrix");
@@ -16,6 +17,10 @@ namespace marrow {
         _no_lights_loc = getUniformLocation("no_lights");
         _light_indices_loc = getUniformLocation("light_indices");
         _light_ubo_bloc = getUniformBlockIndex("light_ubo");
+    }
+
+    void ObjectShader::setClipPlane(const glm::vec4 & clip_plane) {
+        glUniform4fv(_clip_plane_loc, 1, glm::value_ptr(clip_plane));
     }
 
     void ObjectShader::setModelMatrix(glm::mat4 model_matrix) {

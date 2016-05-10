@@ -6,6 +6,7 @@ namespace marrow {
     TerrainShader::TerrainShader() {
         createAndLinkProgram("shaders/terrain_vertex.glsl", "shaders/terrain_fragment.glsl");
         //uniform
+        _clip_plane_loc = getUniformLocation("clip_plane");
         _pv_matrix_loc = getUniformLocation("pv_matrix");
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
@@ -21,6 +22,10 @@ namespace marrow {
         _no_lights_loc = getUniformLocation("no_lights");
         _light_indices_loc = getUniformLocation("light_indices");
         _light_ubo_bloc = getUniformBlockIndex("light_ubo");
+    }
+
+    void TerrainShader::setClipPlane(const glm::vec4 & clip_plane) {
+        glUniform4fv(_clip_plane_loc, 1, glm::value_ptr(clip_plane));
     }
 
     void TerrainShader::setPVMatrix(glm::mat4 pv_matrix) {

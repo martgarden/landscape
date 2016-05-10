@@ -20,8 +20,8 @@ std::string toStr(int no) {
 
 int main(int argc, char ** argv) {
     marrow::Window window(1000, 800, "Legolas");
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
     marrow::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), 0, 0);
     marrow::Geometry cabinet("obj/pino.obj");
     marrow::Texture plantex("tex/pino.png");
@@ -55,6 +55,9 @@ int main(int argc, char ** argv) {
             renderer.addTerrain(std::make_pair(i, j), new marrow::Terrain(new marrow::Texture((hs+toStr(i)+toStr(j)+".png").c_str()), new marrow::Texture((bs+toStr(i)+toStr(j)+".png").c_str()), &background, &red, &green, &blue));
         }
     }
+    marrow::Water water(0.0f, 0.0f, 150.0f, 150.0f);
+    renderer.setWaterLevel(22.0f);
+    renderer.addWater(&water);
     bool done = false;
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now(), t2;
     double span;

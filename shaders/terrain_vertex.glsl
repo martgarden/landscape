@@ -2,6 +2,7 @@
 
 in vec2 position;
 
+uniform vec4 clip_plane;
 uniform mat4 pv_matrix;
 uniform sampler2D height_map;
 uniform int x_off;
@@ -24,4 +25,5 @@ void main()
     VS_position_ws = final_pos.xyz;
     VS_tex_coord_ws = tex_coords;
     gl_Position = pv_matrix * final_pos;
+    gl_ClipDistance[0] = dot(final_pos, clip_plane);
 }

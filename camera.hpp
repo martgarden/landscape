@@ -30,6 +30,7 @@ namespace marrow {
             void down(float time);
             void forward(float time);
             void backward(float time);
+            void mirror(float height);
 
     };
 }

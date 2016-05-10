@@ -14,6 +14,11 @@ namespace marrow {
         *this = loadFromFile(file_name);
     }
 
+    Texture::Texture(GLuint tex_id, GLenum type) {
+        _tex_id = tex_id;
+        _type = type;
+    }
+
     Texture &Texture::operator =(const Texture &rhs) {
         _tex_id = rhs._tex_id;
         _type = rhs._type;
