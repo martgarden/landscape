@@ -43,21 +43,23 @@ void main()
     float material_shininess = 100.0;
     if(alpha < 0.5)
         discard;
-    vec3 L, E, N, H;
+    vec3 L, nL, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
-    float Idiff, Ispec;
+    float Idiff, Ispec, distance;
     vec3 light = vec3(0.0);
     for(int i = 0; i < no_lights; i++) {
-        L = normalize(lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws);
-        H = normalize(E + L);
+        L = lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws;
+        distance = length(L);
+        nL = normalize(L);
+        H = normalize(E + nL);
 
-        Idiff = max(dot(L, N), 0.0);
+        Idiff = max(dot(nL, N), 0.0);
         Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
 
-        light += material_ambient * lights.light_data[light_indices[i]].ambient +
+        light += (material_ambient * lights.light_data[light_indices[i]].ambient +
         material_diffuse * lights.light_data[light_indices[i]].diffuse * Idiff +
-        material_specular * lights.light_data[light_indices[i]].specular * Ispec;
+        material_specular * lights.light_data[light_indices[i]].specular * Ispec)/(lights.light_data[light_indices[i]].attenuation.x + distance*lights.light_data[light_indices[i]].attenuation.y + distance*distance*lights.light_data[light_indices[i]].attenuation.z);
     }
 
     final_color = vec4(mix(light, fog_color, 1.0-clamp(exp(-fog_density*length(eye_position - VS_position_ws)), 0.0, 1.0)), 1.0);

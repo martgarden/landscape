@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <chrono>
 
 std::string toStr(int no) {
@@ -21,34 +23,44 @@ std::string toStr(int no) {
 int main(int argc, char ** argv) {
     marrow::Window window(1000, 800, "Legolas");
     marrow::Camera camera(glm::vec3(0.0f, 30.0f, 0.0f), 0, 0);
-    marrow::Geometry cabinet("obj/npino.obj");
-    marrow::Texture plantex("tex/pino.png");
-    marrow::Object cabob(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 20.0, 1.0)));
-    marrow::Object cabob2(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 1.0)));
-    marrow::Object cabob3(&cabinet, &plantex, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 10.0)));
-
+    marrow::Renderer renderer;
+    marrow::Geometry treeg("obj/npino.obj");
+    marrow::Texture treet("tex/pino.png");
     marrow::Geometry houseg("obj/house.obj");
     marrow::Texture houset("tex/house.png");
-    marrow::Object house(&houseg, &houset, glm::translate(glm::mat4(1.0), glm::vec3(3.0, 0.0, 25.0)));;
-
     marrow::Geometry lampg("obj/nlamp.obj");
     marrow::Texture lampt("tex/lamp.png");
-    marrow::Object lamp(&lampg, &lampt, glm::translate(glm::mat4(1.0), glm::vec3(0.0, 25.0, 0.0)));;
-    marrow::Light light(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    marrow::Light light2(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    marrow::Light light3(glm::vec4(0.0f, 28.2f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(2.5f, 10.5f, 2.5f), glm::vec3(0.4f, 5.0f, 0.0f), glm::vec3(1.0f, 0.1f, 0.1f));
+    std::ifstream ofile("obj/objects.txt");
+    std::string line, word;
+    while(std::getline(ofile, line)) {
+        std::istringstream is(line);
+        is>>word;
+        if(word == "house") {
+            float x, y, z, rot;
+            is>>x>>y>>z>>rot;
+            renderer.addObject(new marrow::Object(&houseg, &houset, glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)) * glm::rotate(glm::mat4(1.0f), rot, glm::vec3(0.0f, 1.0f, 0.0f))));
+        }
+        if(word == "tree") {
+            float x, y, z, rot;
+            is>>x>>y>>z>>rot;
+            renderer.addObject(new marrow::Object(&treeg, &treet, glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)) * glm::rotate(glm::mat4(1.0f), rot, glm::vec3(0.0f, 1.0f, 0.0f))));
+        }
+        else if(word == "lamp") {
+            float x, y, z, r, g, b;
+            is>>x>>y>>z>>r>>g>>b;
+            renderer.addObject(new marrow::Object(&lampg, &lampt, glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z))));
+            glm::vec3 color(r, g, b);
+            renderer.addLight(new marrow::Light(glm::vec4(x, y + 3.2f, z, 1.0f), 0.1f*color, 0.6f*color, color, glm::vec3(1.0, 0.01, 0.001)));
+        }
+    }
+
+    marrow::Light sun(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    marrow::Light moon(glm::vec4(10.0f, 10.0f, 10.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(3.4f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     marrow::Texture day = marrow::Texture::loadCubeFromFiles("tex/Day", ".png");
     marrow::Texture night = marrow::Texture::loadCubeFromFiles("tex/Night", ".png");
-    marrow::Skybox skybox(&day, &night, &light, &light2, 50.0f);
-    marrow::Renderer renderer;
-    renderer.addObject(&cabob);
-    renderer.addObject(&cabob2);
-    renderer.addObject(&cabob3);
-    renderer.addObject(&house);
-    renderer.addObject(&lamp);
-    renderer.addLight(&light);
-    renderer.addLight(&light2);
-    renderer.addLight(&light3);
+    marrow::Skybox skybox(&day, &night, &sun, &moon, 50.0f);
+    renderer.addLight(&sun);
+    renderer.addLight(&moon);
     renderer.setSkybox(&skybox);
     std::string hs("tex/height_map");
     std::string bs("tex/brgb_map");

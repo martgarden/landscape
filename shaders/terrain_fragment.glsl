@@ -42,7 +42,7 @@ void main()
     vec3 material_diffuse = material_ambient;
     vec3 material_specular = vec3(0.1, 0.1, 0.1);
     float material_shininess = 1000.0;
-    vec3 L, E, N, H;
+    vec3 L, nL, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
     float Idiff, Ispec, distance;
@@ -50,9 +50,10 @@ void main()
     for(int i = 0; i < no_lights; i++) {
         L = lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws;
         distance = length(L);
-        H = normalize(E + L);
+        nL = normalize(L);
+        H = normalize(E + nL);
 
-        Idiff = max(dot(normalize(L), N), 0.0);
+        Idiff = max(dot(nL, N), 0.0);
         Ispec = (Idiff * pow(max(dot(H, N), 0.0), material_shininess));
 
         light += (material_ambient * lights.light_data[light_indices[i]].ambient +
