@@ -47,6 +47,5 @@ void main()
         color += water_specular * lights.light_data[light_indices[i]].specular * Ispec;
     }
 
-    //final_color = vec4(mix(color, fog_color, 1.0-clamp(exp(-fog_density*length(eye_position - VS_position_ws)), 0.0, 1.0)), 1.0);
-    final_color = vec4(color, 1.0);
+    final_color = vec4(mix(color, fog_color, 1.0-clamp(exp(-fog_density*length(eye_position - VS_position_ws)), 0.0, 1.0)), 1.0);
 }

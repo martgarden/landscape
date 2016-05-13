@@ -11,7 +11,7 @@ namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList(), _terrainList(), _waterList() {
         SDL_GetWindowSize(Window::getCurrentWindow(), &_w, &_h);
         _projectionMatrix = glm::perspective(glm::radians(45.0f), float(_w) / float(_h), 0.1f, 610.0f);
-        _frame_reflect = new Frame(_w/4, _h/4);
+        _frame_reflect = new Frame(_w/3, _h/3);
         _frame_refract = new Frame(_w/4, _h/4);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearDepth(1.0);
@@ -32,6 +32,7 @@ namespace marrow {
 
     void Renderer::addWater(Water * newWater) {
         _waterList.push_back(newWater);
+        _swamps.insert(newWater->getTerrains()->begin(), newWater->getTerrains()->end());
     }
 
     void Renderer::setSkybox(Skybox * skybox) {
@@ -42,7 +43,7 @@ namespace marrow {
         _water_level = water_level;
     }
 
-    void Renderer::basic_render(Camera & camera, glm::vec4 clip_plane) {
+    void Renderer::basic_render(Camera & camera, glm::vec4 clip_plane, bool swamps) {
         glEnable(GL_CULL_FACE);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         _object_shader.set();
@@ -63,6 +64,14 @@ namespace marrow {
         _terrain_shader.setLights(_lightList);
         _terrain_shader.setEyePos(camera.getEyePosition());
         _terrain_shader.setPVMatrix(pv_matrix);
+        if(swamps) {
+            for(auto i: _swamps) {
+                _terrain_shader.setOff(i.first, i.second);
+                _terrainList[i]->draw(&_terrain_shader);
+            }
+            _terrain_shader.unset();
+            return;
+        }
         for(auto i: _terrainList) {
             _terrain_shader.setOff(i.first.first, i.first.second);
             i.second->draw(&_terrain_shader);
@@ -80,11 +89,11 @@ namespace marrow {
         _frame_reflect->set();
         glm::vec4 plane(0.0, 1.0, 0.0, -_water_level);
         plane *= camera.mirror(_water_level);
-        basic_render(camera, plane);
+        basic_render(camera, plane, true);
         camera.mirror(_water_level);
         _frame_reflect->unset();
         _frame_refract->set();
-        basic_render(camera, -plane);
+        basic_render(camera, -plane, true);
         _frame_refract->unset();
         glViewport(0, 0, _w, _h);
         glDisable(GL_CLIP_DISTANCE0);

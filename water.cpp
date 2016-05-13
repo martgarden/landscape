@@ -13,9 +13,17 @@ namespace marrow {
             0, 3, 2
         };
         _model = new Geometry(vertices, 8, 2, indices, 6);
+        _covered_terrains.insert(std::make_pair(int(floor(max_x/200.0f)), int(floor(max_z/200.0f))));
+        _covered_terrains.insert(std::make_pair(int(floor((max_x-x_res)/200.0f)), int(floor(max_z/200.0f))));
+        _covered_terrains.insert(std::make_pair(int(floor(max_x/200.0f)), int(floor((max_z-z_res)/200.0f))));
+        _covered_terrains.insert(std::make_pair(int(floor((max_x-x_res)/200.0f)), int(floor((max_z-z_res)/200.0f))));
     }
 
     void Water::draw() {
         _model->draw();
+    }
+
+    std::set<std::pair<int, int> > * Water::getTerrains() {
+        return &_covered_terrains;
     }
 }

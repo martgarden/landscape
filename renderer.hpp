@@ -30,6 +30,7 @@ namespace marrow {
             std::list<Light *> _lightList;
             std::map<std::pair<GLint, GLint>, Terrain * > _terrainList;
             std::list<Water *> _waterList;
+            std::set<std::pair<int, int> > _swamps;
             Skybox * _skybox = NULL;
             float _water_level = 0.0f;
             Frame * _frame_reflect = NULL;
@@ -44,7 +45,7 @@ namespace marrow {
             void addWater(Water * newWater);
             void setSkybox(Skybox * skybox);
             void setWaterLevel(float water_level);
-            void basic_render(Camera & camera, glm::vec4 clip_plane);
+            void basic_render(Camera & camera, glm::vec4 clip_plane, bool swamps = false);
             void render(Camera & camera);
     };
 }
