@@ -11,7 +11,7 @@ namespace marrow {
     Renderer::Renderer() : _objectList(), _lightList(), _terrainList(), _waterList() {
         SDL_GetWindowSize(Window::getCurrentWindow(), &_w, &_h);
         _projectionMatrix = glm::perspective(glm::radians(45.0f), float(_w) / float(_h), 0.1f, 610.0f);
-        _frame_reflect = new Frame(_w/3, _h/3);
+        _frame_reflect = new Frame(_w/4, _h/4);
         _frame_refract = new Frame(_w/4, _h/4);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearDepth(1.0);
@@ -27,7 +27,14 @@ namespace marrow {
     }
 
     void Renderer::addTerrain(std::pair<GLint, GLint> offset, Terrain * newTerrain) {
-        _terrainList[offset] = newTerrain;
+        _terrainList[offset] = std::make_pair(std::list<Light *>(), newTerrain);
+        for(auto i: _lightList) {
+            glm::vec4 position = i->getPosition();
+            if(position.w == 0.0f or (position.x > offset.first*200.0f and position.x < (offset.first+1)*200.0f and position.z > offset.second*200.0f and position.z < (offset.second+1)*200.0f )) {
+                _terrainList[offset].first.push_back(i);
+                std::cout<<offset.first<<" "<<offset.second<<std::endl;
+            }
+        }
     }
 
     void Renderer::addWater(Water * newWater) {
@@ -61,20 +68,21 @@ namespace marrow {
         _terrain_shader.set();
         _terrain_shader.setClipPlane(clip_plane);
         _terrain_shader.setFog(_fogColor, _fogDensity);
-        _terrain_shader.setLights(_lightList);
         _terrain_shader.setEyePos(camera.getEyePosition());
         _terrain_shader.setPVMatrix(pv_matrix);
         if(swamps) {
             for(auto i: _swamps) {
                 _terrain_shader.setOff(i.first, i.second);
-                _terrainList[i]->draw(&_terrain_shader);
+                _terrain_shader.setLights(_terrainList[i].first);
+                _terrainList[i].second->draw(&_terrain_shader);
             }
             _terrain_shader.unset();
             return;
         }
         for(auto i: _terrainList) {
             _terrain_shader.setOff(i.first.first, i.first.second);
-            i.second->draw(&_terrain_shader);
+            _terrain_shader.setLights(i.second.first);
+            i.second.second->draw(&_terrain_shader);
         }
         _terrain_shader.unset();
         if(_skybox != NULL) {

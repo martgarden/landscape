@@ -28,6 +28,7 @@ namespace marrow {
             void setParams(glm::vec4 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
             void setPosition(glm::vec4 position);
             int getArrayPosition();
+            glm::vec4 getPosition();
             static GLuint getUBO();
 
     };

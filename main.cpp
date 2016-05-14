@@ -50,7 +50,7 @@ int main(int argc, char ** argv) {
             is>>x>>y>>z>>r>>g>>b;
             renderer.addObject(new marrow::Object(&lampg, &lampt, glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z))));
             glm::vec3 color(r, g, b);
-            renderer.addLight(new marrow::Light(glm::vec4(x, y + 3.2f, z, 1.0f), 0.1f*color, 0.6f*color, color, glm::vec3(1.0, 0.01, 0.001)));
+            renderer.addLight(new marrow::Light(glm::vec4(x, y + 3.2f, z, 1.0f), 0.1f*color, 0.6f*color, color, glm::vec3(1.0, 0.01, 0.01)));
         }
     }
 

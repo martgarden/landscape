@@ -28,7 +28,7 @@ namespace marrow {
             glm::mat4 _projectionMatrix;
             std::list<Object *> _objectList;
             std::list<Light *> _lightList;
-            std::map<std::pair<GLint, GLint>, Terrain * > _terrainList;
+            std::map<std::pair<GLint, GLint>, std::pair<std::list<Light *>, Terrain *> > _terrainList;
             std::list<Water *> _waterList;
             std::set<std::pair<int, int> > _swamps;
             Skybox * _skybox = NULL;

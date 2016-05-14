@@ -60,6 +60,5 @@ void main()
         material_diffuse * lights.light_data[light_indices[i]].diffuse * Idiff +
         material_specular * lights.light_data[light_indices[i]].specular * Ispec)/(lights.light_data[light_indices[i]].attenuation.x + distance*lights.light_data[light_indices[i]].attenuation.y + distance*distance*lights.light_data[light_indices[i]].attenuation.z);
     }
-
     final_color = vec4(mix(light, fog_color, 1.0-clamp(exp(-pow(fog_density*length(eye_position - VS_position_ws), 2.0)), 0.0, 1.0)), 1.0);
 }

@@ -44,6 +44,13 @@ namespace marrow {
         return _array_position;
     }
 
+    glm::vec4 Light::getPosition() {
+        return glm::vec4(_ubo_data[_array_position]._position[0],
+                         _ubo_data[_array_position]._position[1],
+                         _ubo_data[_array_position]._position[2],
+                         _ubo_data[_array_position]._position[3]);
+    }
+
     GLuint Light::getUBO() {
         return _ubo_id;
     }
