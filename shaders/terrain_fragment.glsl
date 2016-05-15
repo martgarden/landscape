@@ -45,11 +45,14 @@ void main()
     vec3 L, nL, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
-    float Idiff, Ispec, distance;
+    float Idiff, Ispec, distance, attenuation;
     vec3 light = vec3(0.0);
     for(int i = 0; i < no_lights; i++) {
         L = lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws;
         distance = length(L);
+        attenuation = (lights.light_data[light_indices[i]].attenuation.x + distance*lights.light_data[light_indices[i]].attenuation.y + distance*distance*lights.light_data[light_indices[i]].attenuation.z);
+        if(attenuation > 15)
+            continue;
         nL = normalize(L);
         H = normalize(E + nL);
 
@@ -58,7 +61,7 @@ void main()
 
         light += (material_ambient * lights.light_data[light_indices[i]].ambient +
         material_diffuse * lights.light_data[light_indices[i]].diffuse * Idiff +
-        material_specular * lights.light_data[light_indices[i]].specular * Ispec)/(lights.light_data[light_indices[i]].attenuation.x + distance*lights.light_data[light_indices[i]].attenuation.y + distance*distance*lights.light_data[light_indices[i]].attenuation.z);
+        material_specular * lights.light_data[light_indices[i]].specular * Ispec)/attenuation;
     }
     final_color = vec4(mix(light, fog_color, 1.0-clamp(exp(-pow(fog_density*length(eye_position - VS_position_ws), 2.0)), 0.0, 1.0)), 1.0);
 }

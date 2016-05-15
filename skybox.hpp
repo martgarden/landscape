@@ -10,7 +10,7 @@ namespace marrow {
     class Skybox {
         private:
             static Geometry * _model;
-            static constexpr float DAY = 60.0f;
+            static constexpr float DAY = 100.0f;
             Texture * _day_tex;
             Texture * _night_tex;
             Light * _sun_light;
