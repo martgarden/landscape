@@ -45,15 +45,15 @@ void main()
     vec3 L, nL, E, N, H;
     E = normalize(eye_position - VS_position_ws);
     N = normalize(VS_normal_ws);
-    float Idiff, Ispec, distance, attenuation;
+    lowp float Idiff, Ispec, distance, attenuation;
     vec3 light = vec3(0.0);
     for(int i = 0; i < no_lights; i++) {
         L = lights.light_data[light_indices[i]].position.xyz - lights.light_data[light_indices[i]].position.w*VS_position_ws;
         distance = length(L);
         attenuation = (lights.light_data[light_indices[i]].attenuation.x + distance*lights.light_data[light_indices[i]].attenuation.y + distance*distance*lights.light_data[light_indices[i]].attenuation.z);
-        if(attenuation > 15)
+        if(attenuation > 15.0)
             continue;
-        nL = normalize(L);
+        nL = L/distance;
         H = normalize(E + nL);
 
         Idiff = max(dot(nL, N), 0.0);
