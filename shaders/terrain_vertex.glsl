@@ -11,6 +11,7 @@ uniform int z_off;
 out vec3 VS_normal_ws;
 out vec3 VS_position_ws;
 out vec2 VS_tex_coord_ws;
+out vec2 VS_tex_coord_tiled_ws;
 
 void main()
 {
@@ -24,6 +25,7 @@ void main()
     VS_normal_ws = scale.xyz * (x_nor + z_nor);
     VS_position_ws = final_pos.xyz;
     VS_tex_coord_ws = tex_coords;
+    VS_tex_coord_tiled_ws = 15.0 * tex_coords;
     gl_Position = pv_matrix * final_pos;
     gl_ClipDistance[0] = dot(final_pos, clip_plane);
 }

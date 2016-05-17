@@ -11,6 +11,7 @@ namespace marrow {
         _fog_color_loc = getUniformLocation("fog_color");
         _fog_density_loc = getUniformLocation("fog_density");
         _eye_pos_loc = getUniformLocation("eye_position");
+        _day_time_loc = getUniformLocation("day_time");
         _reflect_tex_loc = getUniformLocation("reflect_tex");
         _refract_tex_loc = getUniformLocation("refract_tex");
         _no_lights_loc = getUniformLocation("no_lights");
@@ -33,6 +34,10 @@ namespace marrow {
 
     void WaterShader::setEyePos(const glm::vec3 & eye_pos) {
         glUniform3fv(_eye_pos_loc, 1, glm::value_ptr(eye_pos));
+    }
+
+    void WaterShader::setDayTime(float day_time) {
+        glUniform1f(_day_time_loc, day_time);
     }
 
     void WaterShader::setReflectTex(GLint slot) {

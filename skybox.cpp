@@ -93,4 +93,8 @@ namespace marrow {
         _model->draw();
         _day_tex->unset();
     }
+
+    float Skybox::getDayTime() {
+        return _day_time;
+    }
 }

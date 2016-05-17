@@ -25,6 +25,7 @@ namespace marrow {
 
             void tick(float span);
             void draw(SkyboxShader * shader, glm::mat4 view_matrix, glm::mat4 projection_matrix);
+            float getDayTime();
     };
 }
 
