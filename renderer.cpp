@@ -121,7 +121,6 @@ namespace marrow {
         _frame_refract->getColorTex()->set();
         for(auto i: _waterList) {
             i->draw();
-            std::cerr<<"b";
         }
     }
 }

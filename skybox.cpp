@@ -9,7 +9,6 @@ namespace marrow {
 
     Skybox::Skybox(Texture * day_tex, Texture * night_tex, Light * sun_light, Light * moon_light, float start_time) {
         if(_model == NULL) {
-            std::cerr<<"a";
             float vertices[] = {
                 -1.0, -1.0, -1.0,
                 -1.0, -1.0,  1.0,

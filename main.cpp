@@ -98,7 +98,7 @@ int main(int argc, char ** argv) {
         t2 = std::chrono::high_resolution_clock::now();
         span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t).count();
         t = t2;
-        std::cout << 1/span << std::endl;
+        //std::cout << 1/span << std::endl;
         camera.tick(span);
         skybox.tick(span);
         renderer.render(camera);
