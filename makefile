@@ -1,5 +1,5 @@
 legolas: main.o window.o initialiser.o light.o geometry.o object.o camera.o renderer.o texture.o terrain.o skybox.o water.o frame.o
-	g++ -o legolas main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o texture.o terrain.o skybox.o water.o frame.o shaders/shader.o shaders/objectShader.o shaders/terrainShader.o shaders/skyboxShader.o shaders/waterShader.o -lGL -lGLU -lGLEW `pkg-config --libs IL sdl2` -std=c++11
+	g++ -o landscape main.o window.o initialiser.o  light.o geometry.o object.o camera.o renderer.o texture.o terrain.o skybox.o water.o frame.o shaders/shader.o shaders/objectShader.o shaders/terrainShader.o shaders/skyboxShader.o shaders/waterShader.o -lGL -lGLU -lGLEW `pkg-config --libs IL sdl2` -std=c++11
 main.o: main.cpp window.o
 	g++ -c -o main.o main.cpp -std=c++11
 window.o: window.hpp window.cpp initialiser.o

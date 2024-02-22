@@ -22,6 +22,7 @@ namespace marrow {
     Texture &Texture::operator =(const Texture &rhs) {
         _tex_id = rhs._tex_id;
         _type = rhs._type;
+        return *this;
     }
 
     bool LoadAndSetTexture(const char *filename, GLenum target) {
